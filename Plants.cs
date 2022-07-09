@@ -42,13 +42,9 @@ namespace ForestComp
             //this.trunkColor = Color.FromArgb(220, 119, 0);
             this.trunkColor = Color.FromArgb(64, 104, 136);
             this.soil_demand = 50;
-            this.water_demand = 50;
+            this.water_demand = 60;
             this.light_demand = 70;
         }
-
-
-
-
     }
 
     class El : Plants
@@ -72,7 +68,7 @@ namespace ForestComp
             this.plantkind = PlantKind.El;
             this.crownColor = Color.FromArgb(120, 200, 00);
             this.trunkColor = Color.FromArgb(248, 104, 48);
-            this.soil_demand = 40;
+            this.soil_demand = 30;
             this.water_demand = 60;
             this.light_demand = 60;
         }

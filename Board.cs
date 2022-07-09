@@ -112,8 +112,8 @@ namespace ForestComp
 		}
 		private void plant_Choose(Cell kletka)
 		{
-			
-			int random_plant = rand.Next(1, 101);
+			int random_plant = plant_Placement(kletka);
+			//int random_plant = rand.Next(1, 101);
 			//window.richTextBox1.Text += random_plant + "\n";
 			switch (random_plant)
 			{
@@ -185,55 +185,152 @@ namespace ForestComp
 			}
 
 		}
-		private void plant_Placement(Cell kletka)
+		private int plant_Placement(Cell kletka)
 		{
+			int kolvo = 101;
 			
-			int prolifc_req = 100 - (kletka.plants.soil_demand - kletka.soil.prolificacy);
-			int[] plant_soil = new int[4]; //Массив для хранения требований к почве разных растений
+			int[] rand_mass = new int[kolvo];
+			for (int i = 0; i < kolvo; i++)
+				rand_mass[i] = 0;
+
+			int[] plant_soil = new int[6]; //Массив для хранения требований к почве разных растений
 
 			Osina osina = new Osina();
 			Klen klen = new Klen();
 			El el = new El();
+			
 			plant_soil[0] = kletka.soil.prolificacy - osina.soil_demand;
 			plant_soil[1] = kletka.soil.prolificacy - klen.soil_demand;
 			plant_soil[2] = kletka.soil.prolificacy - el.soil_demand;
 
 			int osina_chances = 3, klen_chances = 2, el_chances = 2; 
 
+			//Шансы деревьев прорасти при заданной плодородности
 			if (Math.Abs(plant_soil[0]) <= 10)			
-				osina_chances += 2;			
-			else if (Math.Abs(plant_soil[0]) > 10 && Math.Abs(plant_soil[0]) <= 30)
+				osina_chances += 0;			
+			else if (plant_soil[0] > 10 && plant_soil[0] <= 30)
 				osina_chances += 1;
-			else if (Math.Abs(plant_soil[0]) > 30 && Math.Abs(plant_soil[0]) <= 60)
+			else if (plant_soil[0] > 30 && plant_soil[0] <= 60)
+				osina_chances += 2;
+			else if (plant_soil[0] > 60)
+				osina_chances += 3;
+			else if (plant_soil[0] < -10 && plant_soil[0] >= -30)
 				osina_chances -= 1;
-			else if (Math.Abs(plant_soil[0]) > 60 && Math.Abs(plant_soil[0]) <= 100)
+			else if (plant_soil[0] < -30 && plant_soil[0] >= -60)
 				osina_chances -= 2;
+			else if (plant_soil[0] < -60)
+				osina_chances -= 3;
 
 			if (Math.Abs(plant_soil[1]) <= 10)
 				klen_chances += 0;
-			else if (plant_soil[1] > 10 && plant_soil[1] <= 20)
+			else if (plant_soil[1] > 10 && plant_soil[1] <= 30)
 				klen_chances += 1;
-			else if (Math.Abs(plant_soil[1]) > 20 && Math.Abs(plant_soil[1]) <= 30)
+			else if (plant_soil[1] > 30 && plant_soil[1] <= 60)
 				klen_chances += 2;
-			else if (plant_soil[1] > 40)
+			else if (plant_soil[1] > 60)
 				klen_chances += 3;
+			else if (plant_soil[1] < -10 && plant_soil[1] >= -30)
+				klen_chances -= 1;
+			else if (plant_soil[1] < -30 && plant_soil[1] >= -60)
+				klen_chances -= 2;
+			else if (plant_soil[1] < -60)
+				klen_chances -= 3;
 
 			if (Math.Abs(plant_soil[2]) <= 10)
-				el_chances += 2;
-			else if (Math.Abs(plant_soil[2]) > 10 && Math.Abs(plant_soil[2]) <= 30)
+				el_chances += 0;
+			else if (plant_soil[2] > 10 && plant_soil[2] <= 30)
 				el_chances += 1;
-			else if (Math.Abs(plant_soil[2]) > 30 && Math.Abs(plant_soil[2]) <= 60)
+			else if (plant_soil[2] > 30 && plant_soil[2] <= 60)
+				el_chances += 2;
+			else if (plant_soil[2] > 60)
+				el_chances += 3;
+			else if (plant_soil[2] < -10 && plant_soil[2] >= -30)
 				el_chances -= 1;
-			else if (Math.Abs(plant_soil[2]) > 60 && Math.Abs(plant_soil[2]) <= 100)
+			else if (plant_soil[2] < -30 && plant_soil[2] >= -60)
 				el_chances -= 2;
+			else if (plant_soil[2] < -60)
+				el_chances -= 3;
+
+			for (int i = 0; i < osina_chances; i++)
+				rand_mass[i] = 1;
+
+			for (int i = osina_chances; i < osina_chances + klen_chances; i++)
+				rand_mass[i] = 2;
+
+			for (int i = osina_chances + klen_chances; i < osina_chances + klen_chances + el_chances; i++)
+				rand_mass[i] = 3;
+
+			//for (int i = 0; i < 20; i++)
+			//	window.richTextBox1.Text += rand_mass[i] + " ";
+
+			int random_pl= rand_mass[rand.Next(0, rand_mass.Length)];
+			return random_pl;
+			//switch (random_pl)
+			//{
+			//	case 1: return 1;
+			//	case 2: return 2;
+			//	case 3: return 3;
+			//	default: return 0;											
+			//}
+
+			//Шансы деревьев прорасти при заданной влажности почвы
+			//plant_soil[3] = kletka.soil.wetness - osina.water_demand;
+			//plant_soil[4] = kletka.soil.wetness - klen.water_demand;
+			//plant_soil[5] = kletka.soil.wetness - el.water_demand;
+
+			//if (Math.Abs(plant_soil[3]) <= 10)
+			//	osina_chances += 3;
+			//else if (plant_soil[3] > 10 && plant_soil[3] <= 30)
+			//	osina_chances += 1;
+			//else if (plant_soil[3] > 30 && plant_soil[3] <= 60)
+			//	osina_chances += 2;
+			//else if (plant_soil[3] > 60)
+			//	osina_chances += 3;
+			//else if (plant_soil[3] < -10 && plant_soil[3] >= -30)
+			//	osina_chances -= 1;
+			//else if (plant_soil[3] < -30 && plant_soil[3] >= -60)
+			//	osina_chances -= 2;
+			//else if (plant_soil[3] < -60)
+			//	osina_chances -= 3;
+
+			//if (Math.Abs(plant_soil[4]) <= 10)
+			//	klen_chances += 0;
+			//else if (plant_soil[4] > 10 && plant_soil[4] <= 30)
+			//	klen_chances += 1;
+			//else if (plant_soil[4] > 30 && plant_soil[4] <= 60)
+			//	klen_chances += 2;
+			//else if (plant_soil[4] > 60)
+			//	klen_chances += 3;
+			//else if (plant_soil[4] < -10 && plant_soil[4] >= -30)
+			//	klen_chances -= 1;
+			//else if (plant_soil[4] < -30 && plant_soil[4] >= -60)
+			//	klen_chances -= 2;
+			//else if (plant_soil[4] < -60)
+			//	klen_chances -= 3;
+
+			//if (Math.Abs(plant_soil[5]) <= 10)
+			//	el_chances += 0;
+			//else if (plant_soil[5] > 10 && plant_soil[5] <= 30)
+			//	el_chances += 1;
+			//else if (plant_soil[5] > 30 && plant_soil[5] <= 60)
+			//	el_chances += 2;
+			//else if (plant_soil[5] > 60)
+			//	el_chances += 3;
+			//else if (plant_soil[5] < -10 && plant_soil[5] >= -30)
+			//	el_chances -= 1;
+			//else if (plant_soil[5] < -30 && plant_soil[5] >= -60)
+			//	el_chances -= 2;
+			//else if (plant_soil[5] < -60)
+			//	el_chances -= 3;
+
 			//plant_soil
 			//kletka.soil.prolificacy =
 			//kletka.plants.soil_demand 
 			window.richTextBox1.Text += "Osina chances = " + osina_chances + "\n";
 			window.richTextBox1.Text += "Klen chances = " + klen_chances + "\n";
 			window.richTextBox1.Text += "El chances = " + el_chances + "\n";
-
-			int rand_plant = rand.Next(1, prolifc_req);
+			window.richTextBox1.Text += "\n";
+			//int rand_plant = rand.Next(1, prolifc_req);
 
 		}
 
