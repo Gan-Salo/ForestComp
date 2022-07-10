@@ -20,6 +20,7 @@ namespace ForestComp
         public int lifepoints = 30; //Показатели жизни
         public int age = 0; //Возраст
         public double height = 0; //Высота
+        public int grow_modific; //Модификатор роста
         public int soil_demand; //Требовательность к плодородности почвы
         public int water_demand; //Требовательность к воде
         public int light_demand; //Требовательность к свету
@@ -31,6 +32,9 @@ namespace ForestComp
         public Empty()
         {
             this.plantkind = PlantKind.Empty;
+            this.soil_demand = 0;
+            this.water_demand = 0;
+            this.light_demand = 0;
         }
 
        

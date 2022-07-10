@@ -16,7 +16,7 @@ namespace ForestComp
         public Location location = new Location();
         public Soil soil = new None();      //Почва
         public Plants plants = new Empty();     //Растения
-        public int illumination = 70;    //Степень освещённости клетки
+        public int illumination = 100;    //Степень освещённости клетки
 
         private void Kletka_Load(object sender, EventArgs e)
         {           
