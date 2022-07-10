@@ -16,8 +16,8 @@ namespace ForestComp
         public SoilKind soilkind { get; set; }
         public Color soilColor;
         public int prolificacy; //Плодородность
-        public int parasites;   //Насекомые и паразиты (уменьшают плодородность)
-        public int wetness = 10;     //Влажность 
+        public int toxity;   //Токсичность 
+        public int wetness = 80;     //Влажность 
         
     }
 

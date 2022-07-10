@@ -17,8 +17,9 @@ namespace ForestComp
 
         public Color trunkColor; //Цвет ствола
         public Color crownColor; //Цвет кроны
+        public int lifepoints = 30; //Показатели жизни
         public int age = 0; //Возраст
-        public float height = 0; //Высота
+        public double height = 0; //Высота
         public int soil_demand; //Требовательность к плодородности почвы
         public int water_demand; //Требовательность к воде
         public int light_demand; //Требовательность к свету
@@ -31,6 +32,8 @@ namespace ForestComp
         {
             this.plantkind = PlantKind.Empty;
         }
+
+       
     }
 
     class Osina : Plants
@@ -38,7 +41,8 @@ namespace ForestComp
         public Osina()  //Осина - улучшает прододие почвы около себя, 
         {
             this.plantkind = PlantKind.Osina;
-            this.crownColor = Color.FromArgb(80, 168, 120);
+          
+            this.crownColor = Color.FromArgb(120, 200, 00);
             //this.trunkColor = Color.FromArgb(220, 119, 0);
             this.trunkColor = Color.FromArgb(64, 104, 136);
             this.soil_demand = 50;
@@ -51,9 +55,9 @@ namespace ForestComp
     {
         public El()
         {
-            this.plantkind = PlantKind.El;
-            this.crownColor = Color.FromArgb(120, 200, 00);
-            this.trunkColor = Color.FromArgb(184, 168, 232);
+            this.plantkind = PlantKind.El; 
+            this.crownColor = Color.FromArgb(48, 80, 0);
+            this.trunkColor = Color.FromArgb(80, 136, 00);
             //this.trunkColor = Color.FromArgb(248, 104, 48);
             this.soil_demand = 60;
             this.water_demand = 40;
@@ -65,8 +69,8 @@ namespace ForestComp
     {
         public Klen()
         {
-            this.plantkind = PlantKind.El;
-            this.crownColor = Color.FromArgb(120, 200, 00);
+            this.plantkind = PlantKind.El;      
+            this.crownColor = Color.FromArgb(80, 168, 120); 
             this.trunkColor = Color.FromArgb(248, 104, 48);
             this.soil_demand = 30;
             this.water_demand = 60;
