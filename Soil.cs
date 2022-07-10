@@ -17,7 +17,7 @@ namespace ForestComp
         public Color soilColor;
         public int prolificacy; //Плодородность
         public int parasites;   //Насекомые и паразиты (уменьшают плодородность)
-        public int wetness;     //Влажность 
+        public int wetness = 10;     //Влажность 
         
     }
 
@@ -45,7 +45,7 @@ namespace ForestComp
         {
             this.soilkind = SoilKind.Average;
             this.prolificacy = 50;
-            this.soilColor = Color.FromArgb(209, 147, 71);
+            this.soilColor = Color.FromArgb(208, 156, 122);
         }
     }
 
@@ -54,7 +54,7 @@ namespace ForestComp
         public Rich()
         {
             this.soilkind = SoilKind.Rich;
-            this.soilColor = Color.FromArgb(162, 130, 98);
+            this.soilColor = Color.FromArgb(209, 137, 81);
             this.prolificacy = 80;
         }
     }

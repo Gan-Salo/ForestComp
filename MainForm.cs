@@ -41,9 +41,10 @@ namespace ForestComp
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void oneyear_button_Click(object sender, EventArgs e)
         {
+			board.oneyear_step();
 
-        }
+		}
     }
 }

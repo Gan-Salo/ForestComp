@@ -31,7 +31,7 @@ namespace ForestComp
         {
             this.button1 = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.oneyear_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -53,23 +53,23 @@ namespace ForestComp
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
-            // button2
+            // oneyear_button
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(12, 509);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(120, 58);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Шаг: 1 год";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.oneyear_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.oneyear_button.Location = new System.Drawing.Point(12, 509);
+            this.oneyear_button.Name = "oneyear_button";
+            this.oneyear_button.Size = new System.Drawing.Size(120, 58);
+            this.oneyear_button.TabIndex = 2;
+            this.oneyear_button.Text = "Шаг: 1 год";
+            this.oneyear_button.UseVisualStyleBackColor = true;
+            this.oneyear_button.Click += new System.EventHandler(this.oneyear_button_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1354, 703);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.oneyear_button);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
             this.Name = "MainForm";
@@ -83,7 +83,7 @@ namespace ForestComp
 
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Button button2;
+        public System.Windows.Forms.Button oneyear_button;
     }
 }
 

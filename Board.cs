@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace ForestComp
 {
-	class Board
+	public class Board
 	{
 		public static MainForm window;
 		public static Cell[,] buttons;
@@ -42,21 +42,6 @@ namespace ForestComp
 					button.FlatAppearance.BorderColor = Color.LightGray;
 
 					soil_Choose(button);
-					
-					//int r = rand.Next(1, 5);
-
-     //               if (r == 1)
-     //               {
-     //                   button.BackColor = Color.FromArgb(208, 176, 132);
-     //                   button2.BackColor = Color.FromArgb(208, 176, 132);
-     //               }
-     //               else
-     //               {
-     //                   button.BackColor = Color.FromArgb(218, 189, 171);
-     //                   button2.BackColor = Color.FromArgb(218, 189, 171);
-     //               }
-
-                    //plant_Choose(button);   //Размещение растений по полю
 
                     button2.FlatStyle = FlatStyle.Flat;
 					button2.FlatAppearance.BorderColor = Color.LightGray;
@@ -90,15 +75,6 @@ namespace ForestComp
 					if (buttons[i, j].plants.plantkind != PlantKind.Empty)
 						crown_Draw(buttons2, buttons[i, j], i, j);
 						
-					//	if(buttons[i, j].BackColor == Color.White)
-					//{
-					//	buttons2[i, j].BackColor = Color.ForestGreen;
-					//	buttons2[i + 1, j].BackColor = Color.ForestGreen;
-					//	buttons2[i - 1, j].BackColor = Color.ForestGreen;
-					//	buttons2[i, j + 1].BackColor = Color.ForestGreen;
-					//	buttons2[i, j - 1].BackColor = Color.ForestGreen;
-
-					//}
 				}
 			}
 		}
@@ -108,8 +84,25 @@ namespace ForestComp
 			Cell pressedKletka = sender as Cell;
 			window.richTextBox1.Text += pressedKletka.plants.plantkind + " ";
 			window.richTextBox1.Text += pressedKletka.soil.soilkind + "\n";
+			window.richTextBox1.Text += pressedKletka.plants.age + "\n";
 			plant_Placement(pressedKletka);
 		}
+
+		public void oneyear_step()
+		{
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = 0; j < n; j++)
+				{
+					if (buttons[i, j].plants.plantkind != PlantKind.Empty)
+					{
+						buttons[i, j].plants.age += 1;
+
+					}
+				}
+			}
+		}
+
 		private void plant_Choose(Cell kletka)
 		{
 			int random_plant = plant_Placement(kletka);
@@ -142,8 +135,7 @@ namespace ForestComp
 						break;
 					}
 				default:
-					{
-						
+					{				
 						break;
 					}
 			}
@@ -251,7 +243,45 @@ namespace ForestComp
 			else if (plant_soil[2] < -60)
 				el_chances -= 3;
 
-			for (int i = 0; i < osina_chances; i++)
+            //Шансы деревьев прорасти при заданной влажности почвы
+            plant_soil[3] = kletka.soil.wetness - osina.water_demand;
+            plant_soil[4] = kletka.soil.wetness - klen.water_demand;
+            plant_soil[5] = kletka.soil.wetness - el.water_demand;
+
+            if (Math.Abs(plant_soil[3]) <= 10)
+                osina_chances += 2;
+            else if (Math.Abs(plant_soil[3]) > 10 && Math.Abs(plant_soil[3]) <= 30)
+                osina_chances += 1;
+            else if (Math.Abs(plant_soil[3]) > 30 && Math.Abs(plant_soil[3]) <= 60)
+                osina_chances -= 2;
+            else if (Math.Abs(plant_soil[3]) > 60)
+                osina_chances -= 3;
+            
+
+            if (Math.Abs(plant_soil[4]) <= 10)
+                klen_chances += 2;
+            else if (Math.Abs(plant_soil[4]) > 10 && Math.Abs(plant_soil[4]) <= 30)
+                klen_chances += 1;
+            else if (Math.Abs(plant_soil[4]) > 30 && Math.Abs(plant_soil[4]) <= 60)
+                klen_chances -= 2;
+            else if (Math.Abs(plant_soil[4]) > 60)
+                klen_chances -= 3;
+            
+
+            if (Math.Abs(plant_soil[5]) <= 10)
+                el_chances += 2;
+            else if (Math.Abs(plant_soil[5]) > 10 && Math.Abs(plant_soil[5]) <= 30)
+                el_chances += 1;
+            else if (Math.Abs(plant_soil[5]) > 30 && Math.Abs(plant_soil[5]) <= 60)
+                el_chances -= 1;
+            else if (Math.Abs(plant_soil[5]) > 60)
+                el_chances -= 2;
+         
+
+            
+			
+			//Добавление в массив вероятности 
+            for (int i = 0; i < osina_chances; i++)
 				rand_mass[i] = 1;
 
 			for (int i = osina_chances; i < osina_chances + klen_chances; i++)
@@ -260,72 +290,10 @@ namespace ForestComp
 			for (int i = osina_chances + klen_chances; i < osina_chances + klen_chances + el_chances; i++)
 				rand_mass[i] = 3;
 
-			//for (int i = 0; i < 20; i++)
-			//	window.richTextBox1.Text += rand_mass[i] + " ";
-
-			int random_pl= rand_mass[rand.Next(0, rand_mass.Length)];
+			int random_pl = rand_mass[rand.Next(0, rand_mass.Length)];
 			return random_pl;
-			//switch (random_pl)
-			//{
-			//	case 1: return 1;
-			//	case 2: return 2;
-			//	case 3: return 3;
-			//	default: return 0;											
-			//}
 
-			//Шансы деревьев прорасти при заданной влажности почвы
-			//plant_soil[3] = kletka.soil.wetness - osina.water_demand;
-			//plant_soil[4] = kletka.soil.wetness - klen.water_demand;
-			//plant_soil[5] = kletka.soil.wetness - el.water_demand;
 
-			//if (Math.Abs(plant_soil[3]) <= 10)
-			//	osina_chances += 3;
-			//else if (plant_soil[3] > 10 && plant_soil[3] <= 30)
-			//	osina_chances += 1;
-			//else if (plant_soil[3] > 30 && plant_soil[3] <= 60)
-			//	osina_chances += 2;
-			//else if (plant_soil[3] > 60)
-			//	osina_chances += 3;
-			//else if (plant_soil[3] < -10 && plant_soil[3] >= -30)
-			//	osina_chances -= 1;
-			//else if (plant_soil[3] < -30 && plant_soil[3] >= -60)
-			//	osina_chances -= 2;
-			//else if (plant_soil[3] < -60)
-			//	osina_chances -= 3;
-
-			//if (Math.Abs(plant_soil[4]) <= 10)
-			//	klen_chances += 0;
-			//else if (plant_soil[4] > 10 && plant_soil[4] <= 30)
-			//	klen_chances += 1;
-			//else if (plant_soil[4] > 30 && plant_soil[4] <= 60)
-			//	klen_chances += 2;
-			//else if (plant_soil[4] > 60)
-			//	klen_chances += 3;
-			//else if (plant_soil[4] < -10 && plant_soil[4] >= -30)
-			//	klen_chances -= 1;
-			//else if (plant_soil[4] < -30 && plant_soil[4] >= -60)
-			//	klen_chances -= 2;
-			//else if (plant_soil[4] < -60)
-			//	klen_chances -= 3;
-
-			//if (Math.Abs(plant_soil[5]) <= 10)
-			//	el_chances += 0;
-			//else if (plant_soil[5] > 10 && plant_soil[5] <= 30)
-			//	el_chances += 1;
-			//else if (plant_soil[5] > 30 && plant_soil[5] <= 60)
-			//	el_chances += 2;
-			//else if (plant_soil[5] > 60)
-			//	el_chances += 3;
-			//else if (plant_soil[5] < -10 && plant_soil[5] >= -30)
-			//	el_chances -= 1;
-			//else if (plant_soil[5] < -30 && plant_soil[5] >= -60)
-			//	el_chances -= 2;
-			//else if (plant_soil[5] < -60)
-			//	el_chances -= 3;
-
-			//plant_soil
-			//kletka.soil.prolificacy =
-			//kletka.plants.soil_demand 
 			window.richTextBox1.Text += "Osina chances = " + osina_chances + "\n";
 			window.richTextBox1.Text += "Klen chances = " + klen_chances + "\n";
 			window.richTextBox1.Text += "El chances = " + el_chances + "\n";
