@@ -47,6 +47,7 @@ namespace ForestComp
             this.prolificacy = 50;
             this.soilColor = Color.FromArgb(208, 156, 122);
         }
+ 
     }
 
     class Rich : Soil

@@ -74,10 +74,12 @@ namespace ForestComp
 			Cell pressedKletka = sender as Cell;
 			window.richTextBox1.Text += pressedKletka.plants.plantkind + " ";
 			window.richTextBox1.Text += pressedKletka.soil.soilkind + "\n";
+			window.richTextBox1.Text += "Prof = " + pressedKletka.soil.prolificacy + "\n";
 			window.richTextBox1.Text += "Age = " + pressedKletka.plants.age + "\n";
 			window.richTextBox1.Text += "Height = " + pressedKletka.plants.height + "\n";
 			window.richTextBox1.Text += "Stage = " + pressedKletka.plants.plantstage + "\n";
 			window.richTextBox1.Text += "Lifepoints = " + pressedKletka.plants.lifepoints + "\n";
+			window.richTextBox1.Text += "Lumine = " + pressedKletka.illumination + "\n";
 			//plant_Placement(pressedKletka);
 		}
 
@@ -97,24 +99,32 @@ namespace ForestComp
 		}
 		public void oneyear_step()
 		{
+			
 			for (int i = 0; i < n; i++)
 			{
 				for (int j = 0; j < n; j++)
 				{
+					if (buttons[i, j].soil.prolificacy > 0)
+						buttons[i, j].soil.prolificacy += 10;
+
 					if (buttons[i, j].plants.plantkind != PlantKind.Empty)
 					{
+						tree_dead();    //Проверка жизни деревьев и уничтожение мертвых деревьев
 						buttons[i, j].plants.age += 1;
-						
-						tree_dead();					
-						plant_grow(buttons[i, j]);					
-						plants_refresh();
-						crown_Destroy(); 
-						crown_refresh();
-						crown_check();
-						
+											
+						plant_grow(buttons[i, j]);	//Отрисовка кроны в зависимости от стадии роста дерева				
+					
 					}
 				}
 			}
+
+			lumine_check();
+			soil_refresh(); //Обновление почвы
+
+			plants_refresh();   
+			crown_Destroy();
+			crown_refresh();
+			crown_check();
 		}
 
 		//Спавн деревьев
@@ -642,6 +652,97 @@ namespace ForestComp
 				}
 			}
 		}
+		private void soil_refresh()
+		{
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = 0; j < n; j++)
+				{
+					if (buttons[i, j].plants.plantkind == PlantKind.Empty)
+					{
+						if (buttons[i, j].soil.prolificacy <= 40)
+						{
+							buttons[i, j].soil.soilkind = SoilKind.Poor;
+							buttons[i, j].BackColor = Color.FromArgb(208, 176, 132);
+						}
+						if (buttons[i, j].soil.prolificacy <= 70 && buttons[i, j].soil.prolificacy > 40)
+						{
+							buttons[i, j].soil.soilkind = SoilKind.Average;
+							buttons[i, j].BackColor = Color.FromArgb(208, 156, 122);
+						}
+						if (buttons[i, j].soil.prolificacy <= 100 && buttons[i, j].soil.prolificacy > 70)
+						{
+							buttons[i, j].soil.soilkind = SoilKind.Rich;
+							buttons[i, j].BackColor = Color.FromArgb(209, 137, 81);
+						}
+					}
+				}
+			}
+		}
+
+		//Проверка освещенности клетки в зависимости от закрытия кроной деревьев
+		private void lumine_check()
+		{
+			int lumbuf = Convert.ToInt32(window.luminetextBox.Text);
+			
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = 0; j < n; j++)
+				{
+					if (buttons2[i, j].plkolvo > 1 /*&& !isCrowntallest(buttons[i, j], buttons2[i, j])*/)
+						buttons[i, j].illumination = lumbuf / isCrowntallest(buttons[i, j], buttons2[i, j]);
+					else buttons[i, j].illumination = lumbuf;
+				}
+			}
+		}
+
+		//Проверка самого высокого дерева (самое высокое дерево не будет закрыто кроной другого - это отразится на освещённости)
+		public int isCrowntallest(Cell kletka, Aircells aircell)
+		{
+			Aircells airc_buf = new Aircells();			
+			double max = -1;
+			int maxindex = 1;
+
+			max = aircell.plants[0].height;
+
+			
+			for (int k = 0; k < aircell.plkolvo; k++)
+			{
+				for (int l = k + 1; l < aircell.plkolvo; l++)
+				{
+					if (aircell.plants[k].height < aircell.plants[l].height)
+					{
+						airc_buf.plants[0] = aircell.plants[k];
+						aircell.plants[k] = aircell.plants[l];
+						aircell.plants[l] = airc_buf.plants[0];
+					}
+				}
+			}
+
+            for (int k = 0; k < aircell.plkolvo; k++)
+            {
+				if (kletka.plants == aircell.plants[k])
+					maxindex = k + 1;
+            }
+
+			return maxindex;
+            //for (int k = 0; k < aircell.plkolvo; k++)
+            //{
+            //	if (max < aircell.plants[k].height)
+            //		max = aircell.plants[k].height;
+            //}
+
+            //if (kletka.plants.height == max)
+            //	return true;
+            //else return false;
+            //
+
+            //if (kletka.plants.height == max)
+            //	return true;
+            //else return false;
+
+
+        }
 
 	}
 }

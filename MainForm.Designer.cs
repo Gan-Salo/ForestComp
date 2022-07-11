@@ -32,6 +32,7 @@ namespace ForestComp
             this.button1 = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.oneyear_button = new System.Windows.Forms.Button();
+            this.luminetextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
@@ -64,11 +65,20 @@ namespace ForestComp
             this.oneyear_button.UseVisualStyleBackColor = true;
             this.oneyear_button.Click += new System.EventHandler(this.oneyear_button_Click);
             // 
+            // luminetextBox
+            // 
+            this.luminetextBox.Location = new System.Drawing.Point(12, 592);
+            this.luminetextBox.Name = "luminetextBox";
+            this.luminetextBox.Size = new System.Drawing.Size(120, 20);
+            this.luminetextBox.TabIndex = 3;
+            this.luminetextBox.TextChanged += new System.EventHandler(this.luminetextBox_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1354, 703);
+            this.Controls.Add(this.luminetextBox);
             this.Controls.Add(this.oneyear_button);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.button1);
@@ -76,6 +86,7 @@ namespace ForestComp
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -84,6 +95,7 @@ namespace ForestComp
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.RichTextBox richTextBox1;
         public System.Windows.Forms.Button oneyear_button;
+        public System.Windows.Forms.TextBox luminetextBox;
     }
 }
 

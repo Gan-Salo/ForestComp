@@ -46,5 +46,10 @@ namespace ForestComp
 			board.oneyear_step();
 
 		}
+
+        private void luminetextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
