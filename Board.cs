@@ -21,6 +21,8 @@ namespace ForestComp
 			window = board;
 			buttons = new Cell[n, n];
 			buttons2 = new Aircells[n, n];
+			window.luminetextBox.Text = "30";
+			window.wetnesstextBox.Text = "30";
 
 			//Формирование полей с клетками
 			for (int i = 0; i < n; i++)
@@ -46,8 +48,8 @@ namespace ForestComp
 
 					buttons2[i, j].BackColor = buttons[i, j].soil.soilColor;
 
-					if ((i > 1 && j > 1 && i < (n - 2) && j < (n - 2)))
-						plant_Choose(buttons[i, j]);
+					//if ((i > 1 && j > 1 && i < (n - 2) && j < (n - 2)))
+					//plant_Choose(buttons[i, j], i, j);
 
 					buttons[i, j].Click += new EventHandler(buttons_Click);
 					buttons2[i, j].Click += new EventHandler(buttons2_Click);
@@ -80,6 +82,9 @@ namespace ForestComp
 			window.richTextBox1.Text += "Stage = " + pressedKletka.plants.plantstage + "\n";
 			window.richTextBox1.Text += "Lifepoints = " + pressedKletka.plants.lifepoints + "\n";
 			window.richTextBox1.Text += "Lumine = " + pressedKletka.illumination + "\n";
+			window.richTextBox1.Text += "Wet = " + pressedKletka.soil.wetness + "\n";
+			window.richTextBox1.Text += "Toxity = " + pressedKletka.soil.toxity + "\n";
+			window.richTextBox1.Text += "- - - - - - - - - " + "\n\n";
 			//plant_Placement(pressedKletka);
 		}
 
@@ -99,38 +104,75 @@ namespace ForestComp
 		}
 		public void oneyear_step()
 		{
+
+			for (int i = 0; i < n; i++)
+			{
+				for (int j = 0; j < n; j++)
+				{
+					if ((i > 1 && j > 1 && i < (n - 2) && j < (n - 2)))
+						plant_Choose(buttons[i, j], i, j);
+
+					buttons[i, j].soil.wetness += Convert.ToInt32(window.wetnesstextBox.Text) / 5;
+				}
+			}
 			
 			for (int i = 0; i < n; i++)
 			{
 				for (int j = 0; j < n; j++)
 				{
-					if (buttons[i, j].soil.prolificacy > 0)
-						buttons[i, j].soil.prolificacy += 10;
+					if (buttons[i, j].plants.plantkind == PlantKind.Empty)
+					{
+						buttons[i, j].soil.wetness -= rand.Next(0, 8) + (buttons[i, j].illumination / 5);
+					}
+					
+					if (buttons[i, j].soil.wetness < -100)
+						buttons[i, j].soil.wetness = -100;
 
+					if (buttons[i, j].soil.wetness > 200)
+						buttons[i, j].soil.wetness = 200;
+					//if (buttons[i, j].soil.prolificacy > 0)
+					//	buttons[i, j].soil.prolificacy += 10;
+					
 					if (buttons[i, j].plants.plantkind != PlantKind.Empty)
 					{
 						tree_dead();    //Проверка жизни деревьев и уничтожение мертвых деревьев
 						buttons[i, j].plants.age += 1;
-											
-						plant_grow(buttons[i, j]);	//Отрисовка кроны в зависимости от стадии роста дерева				
-					
+
+						buttons[i, j].soil.wetness -= buttons[i, j].plants.water_demand / 4;    //Почва теряет количество воды, необходимое растению
+						
+						if (buttons[i, j].plants.plantkind == PlantKind.Klen)
+						{
+							//for (int i = k - 1; k < i + 1; i++)
+							//	for (int l = j - 1; l < j + 1; j++)
+							buttons[i, j].soil.toxity += 1;
+							buttons[i + 1, j].soil.toxity += 1;
+							buttons[i - 1, j].soil.toxity += 1;
+							buttons[i, j + 1].soil.toxity += 1;
+							buttons[i, j - 1].soil.toxity += 1;
+							
+						}
+						
+						plant_grow(buttons[i, j]);  //Отрисовка кроны в зависимости от стадии роста дерева				
+					}
+
+					if (buttons[i, j].soil.wetness > 150)
+					{
+						buttons[i, j].soil.toxity -= 1;
 					}
 				}
 			}
 
-			lumine_check();
-			soil_refresh(); //Обновление почвы
-
-			plants_refresh();   
+			soil_refresh();		//Обновление почвы
+			plants_refresh();
 			crown_Destroy();
 			crown_refresh();
 			crown_check();
+			lumine_check();
 		}
-
 		//Спавн деревьев
-		public void plant_Choose(Cell kletka)
+		public void plant_Choose(Cell kletka, int k, int l)
 		{
-			int random_plant = plant_Placement(kletka);
+			int random_plant = plant_Placement(kletka, k, l);
 			//int random_plant = rand.Next(1, 101);
 			//window.richTextBox1.Text += random_plant + "\n";
 			switch (random_plant)
@@ -139,7 +181,7 @@ namespace ForestComp
 					{
 						kletka.plants = new Osina();
 						// kletka.plants.plantkind = PlantKind.Osina;
-						kletka.plants.plantstage = PlantStage.Normal;
+						kletka.plants.plantstage = PlantStage.Small;
 						kletka.BackColor = kletka.plants.trunkColor;
 						break;
 					}
@@ -147,7 +189,7 @@ namespace ForestComp
 					{
 						kletka.plants = new El();
 						kletka.plants.plantkind = PlantKind.El;
-						kletka.plants.plantstage = PlantStage.Normal;
+						kletka.plants.plantstage = PlantStage.Small;
 						kletka.BackColor = kletka.plants.trunkColor;
 						break;
 					}
@@ -170,30 +212,29 @@ namespace ForestComp
 		//Размещение почвы
 		public void soil_Choose(Cell kletka)
 		{
-			int random_soil = rand.Next(1, 5);
+			int random_soil = rand.Next(1, 7);
 
 			switch (random_soil)
 			{
 				case 1:
-				case 4:
+				case 2:
+				case 3:
 					{
 						kletka.soil = new Poor();
 						kletka.BackColor = kletka.soil.soilColor;
-
 						break;
 					}
-				case 2:
+				case 4:
+				case 5:
 					{
 						kletka.soil = new Average();
 						kletka.BackColor = kletka.soil.soilColor;
-
 						break;
 					}
-				case 3:
+				case 6:
 					{
 						kletka.soil = new Rich();
 						kletka.BackColor = kletka.soil.soilColor;
-
 						break;
 					}
 				default:
@@ -205,10 +246,10 @@ namespace ForestComp
 		}
 
 		//Рассчёт вероятности спавна определенных деревьев
-		private int plant_Placement(Cell kletka)
+		private int plant_Placement(Cell kletka, int k, int l)
 		{
-			int kolvo = 101;
-
+			int kolvo = 301;
+			
 			int[] rand_mass = new int[kolvo];
 			for (int i = 0; i < kolvo; i++)
 				rand_mass[i] = 0;
@@ -223,87 +264,110 @@ namespace ForestComp
 			plant_soil[1] = kletka.soil.prolificacy - klen.soil_demand;
 			plant_soil[2] = kletka.soil.prolificacy - el.soil_demand;
 
-			int osina_chances = 3, klen_chances = 2, el_chances = 2;
+			int osina_chances = 2, klen_chances = 2, el_chances = 1;
 
 			//Шансы деревьев прорасти при заданной плодородности
-			if (Math.Abs(plant_soil[0]) <= 10)
+			if (Math.Abs(plant_soil[0]) <= 5)
 				osina_chances += 0;
-			else if (plant_soil[0] > 10 && plant_soil[0] <= 30)
+			else if (plant_soil[0] > 5 && plant_soil[0] <= 20)
 				osina_chances += 1;
-			else if (plant_soil[0] > 30 && plant_soil[0] <= 60)
+			else if (plant_soil[0] > 20 && plant_soil[0] <= 40)
 				osina_chances += 2;
-			else if (plant_soil[0] > 60)
+			else if (plant_soil[0] > 40)
 				osina_chances += 3;
-			else if (plant_soil[0] < -10 && plant_soil[0] >= -30)
-				osina_chances -= 1;
-			else if (plant_soil[0] < -30 && plant_soil[0] >= -60)
-				osina_chances -= 2;
-			else if (plant_soil[0] < -60)
+			else if (plant_soil[0] < -5 && plant_soil[0] >= -20)
 				osina_chances -= 3;
+			else if (plant_soil[0] < -20 && plant_soil[0] >= -40)
+				osina_chances -= 4;
+			else if (plant_soil[0] < -40)
+				osina_chances -= 5;
 
-			if (Math.Abs(plant_soil[1]) <= 10)
+			if (Math.Abs(plant_soil[1]) <= 5)
 				klen_chances += 0;
-			else if (plant_soil[1] > 10 && plant_soil[1] <= 30)
+			else if (plant_soil[1] > 5 && plant_soil[1] <= 20)
 				klen_chances += 1;
-			else if (plant_soil[1] > 30 && plant_soil[1] <= 60)
+			else if (plant_soil[1] > 20 && plant_soil[1] <= 40)
 				klen_chances += 2;
-			else if (plant_soil[1] > 60)
+			else if (plant_soil[1] > 40)
 				klen_chances += 3;
-			else if (plant_soil[1] < -10 && plant_soil[1] >= -30)
-				klen_chances -= 1;
-			else if (plant_soil[1] < -30 && plant_soil[1] >= -60)
-				klen_chances -= 2;
-			else if (plant_soil[1] < -60)
+			else if (plant_soil[1] < -5 && plant_soil[1] >= -20)
 				klen_chances -= 3;
+			else if (plant_soil[1] < -20 && plant_soil[1] >= -40)
+				klen_chances -= 4;
+			else if (plant_soil[1] < -40)
+				klen_chances -= 5;
 
-			if (Math.Abs(plant_soil[2]) <= 10)
+			if (Math.Abs(plant_soil[2]) <= 5)
 				el_chances += 0;
-			else if (plant_soil[2] > 10 && plant_soil[2] <= 30)
+			else if (plant_soil[2] > 5 && plant_soil[2] <= 20)
 				el_chances += 1;
-			else if (plant_soil[2] > 30 && plant_soil[2] <= 60)
+			else if (plant_soil[2] > 20 && plant_soil[2] <= 40)
 				el_chances += 2;
-			else if (plant_soil[2] > 60)
+			else if (plant_soil[2] > 40)
 				el_chances += 3;
-			else if (plant_soil[2] < -10 && plant_soil[2] >= -30)
-				el_chances -= 1;
-			else if (plant_soil[2] < -30 && plant_soil[2] >= -60)
-				el_chances -= 2;
-			else if (plant_soil[2] < -60)
+			else if (plant_soil[2] < -5 && plant_soil[2] >= -20)
 				el_chances -= 3;
+			else if (plant_soil[2] < -20 && plant_soil[2] >= -40)
+				el_chances -= 4;
+			else if (plant_soil[2] < -40)
+				el_chances -= 5;
 
 			//Шансы деревьев прорасти при заданной влажности почвы
 			plant_soil[3] = kletka.soil.wetness - osina.water_demand;
 			plant_soil[4] = kletka.soil.wetness - klen.water_demand;
 			plant_soil[5] = kletka.soil.wetness - el.water_demand;
 
-			if (Math.Abs(plant_soil[3]) <= 10)
-				osina_chances += 2;
-			else if (Math.Abs(plant_soil[3]) > 10 && Math.Abs(plant_soil[3]) <= 30)
-				osina_chances += 1;
-			else if (Math.Abs(plant_soil[3]) > 30 && Math.Abs(plant_soil[3]) <= 60)
-				osina_chances -= 2;
-			else if (Math.Abs(plant_soil[3]) > 60)
-				osina_chances -= 3;
+			if (Math.Abs(plant_soil[3]) <= 5)
+				osina_chances += 3;
+			else if (Math.Abs(plant_soil[3]) > 5 && Math.Abs(plant_soil[3]) <= 20)
+				osina_chances += 4;
+			else if (Math.Abs(plant_soil[3]) > 20 && Math.Abs(plant_soil[3]) <= 40)
+				osina_chances -= 4;
+			else if (Math.Abs(plant_soil[3]) > 40)
+				osina_chances -= 5;
 
 
-			if (Math.Abs(plant_soil[4]) <= 10)
-				klen_chances += 2;
-			else if (Math.Abs(plant_soil[4]) > 10 && Math.Abs(plant_soil[4]) <= 30)
-				klen_chances += 1;
-			else if (Math.Abs(plant_soil[4]) > 30 && Math.Abs(plant_soil[4]) <= 60)
-				klen_chances -= 2;
-			else if (Math.Abs(plant_soil[4]) > 60)
-				klen_chances -= 3;
+			if (Math.Abs(plant_soil[4]) <= 5)
+				klen_chances += 3;
+			else if (Math.Abs(plant_soil[4]) > 10 && Math.Abs(plant_soil[4]) <= 20)
+				klen_chances += 4;
+			else if (Math.Abs(plant_soil[4]) > 20 && Math.Abs(plant_soil[4]) <= 40)
+				klen_chances -= 4;
+			else if (Math.Abs(plant_soil[4]) > 40)
+				klen_chances -= 5;
 
 
-			if (Math.Abs(plant_soil[5]) <= 10)
-				el_chances += 2;
-			else if (Math.Abs(plant_soil[5]) > 10 && Math.Abs(plant_soil[5]) <= 30)
-				el_chances += 1;
-			else if (Math.Abs(plant_soil[5]) > 30 && Math.Abs(plant_soil[5]) <= 60)
+			if (Math.Abs(plant_soil[5]) <= 5)
+				el_chances += 3;
+			else if (Math.Abs(plant_soil[5]) > 10 && Math.Abs(plant_soil[5]) <= 20)
+				el_chances += 4;
+			else if (Math.Abs(plant_soil[5]) > 20 && Math.Abs(plant_soil[5]) <= 40)
+				el_chances -= 4;
+			else if (Math.Abs(plant_soil[5]) > 40)
+				el_chances -= 5;
+
+
+			if (kletka.soil.toxity <= 10)
+			{
 				el_chances -= 1;
-			else if (Math.Abs(plant_soil[5]) > 60)
+				osina_chances -= 1;
+			}
+			else if (kletka.soil.toxity > 10 && kletka.soil.toxity <= 20)
+			{
 				el_chances -= 2;
+				osina_chances -= 2;
+			}
+			else if (kletka.soil.toxity > 20 && kletka.soil.toxity <= 40)
+			{
+				el_chances -= 3;
+				osina_chances -= 3;
+			}
+			else if (kletka.soil.toxity > 40)
+			{
+				el_chances -= 4;
+				osina_chances -= 4;
+			}
+
 
 			if (kletka.plants.plantkind != PlantKind.Empty)
             {
@@ -311,8 +375,21 @@ namespace ForestComp
 				klen_chances = 0;
 				osina_chances = 0;
 			}
+			else if (isplantnear(kletka, k, l))
+			{
+				el_chances = el_chances / 5;
+				klen_chances = klen_chances / 5;
+				osina_chances = osina_chances / 5;
+			}
 
-			
+
+			if (osina_chances < 0)
+				osina_chances = 0;
+			if (klen_chances < 0)
+				klen_chances = 0;
+			if (el_chances < 0)
+				el_chances = 0;
+
 
 			//Добавление в массив вероятности 
 			for (int i = 0; i < osina_chances; i++)
@@ -336,6 +413,19 @@ namespace ForestComp
 
 		}
 
+		private bool isplantnear(Cell kletka, int i, int j)
+		{
+			for (int k = i - 1; k < i + 1; i++)
+				for (int l = j - 1; l < j + 1; j++)
+				{
+					if (kletka.plants.plantkind != PlantKind.Empty)
+					{
+						return true;
+					}
+					else return false;
+				}
+			return false;
+		}
 		private void crown_Draw(Aircells[,] aircells, Cell kletka, int i, int j)
 		{
 			int k = i;
@@ -444,17 +534,17 @@ namespace ForestComp
 			}
 			else if (kletka.plants.age > 1 && kletka.plants.age < 25 && kletka.plants.plantkind == PlantKind.Klen && kletka.plants.height < 25)
 			{
-				kletka.plants.height += 0.5 * modif;
+				kletka.plants.height += 0.8 * modif;
 			}
 
 
 			if (kletka.plants.age <= 15 && kletka.plants.plantkind == PlantKind.El && kletka.plants.height < 35)
 			{
-				kletka.plants.height += 0.2 * modif;
+				kletka.plants.height += 0.4 * modif;
 			}
 			else if (kletka.plants.age > 15 && kletka.plants.age < 60 && kletka.plants.plantkind == PlantKind.El && kletka.plants.height < 35)
 			{
-				kletka.plants.height += 0.5 * modif;
+				kletka.plants.height += 0.8 * modif;
 			}
 
 		}
@@ -470,35 +560,62 @@ namespace ForestComp
 
 			//Шансы деревьев прорасти при заданной плодородности
 			if (Math.Abs(plant_soil) <= 10)
+			{
+				kletka.plants.lifepoints += 1;
 				modif += 0.3;
+			}
 			else if (plant_soil > 10 && plant_soil <= 30)
+			{
+				kletka.plants.lifepoints += 2;
 				modif += 0.4;
+			}
 			else if (plant_soil > 30)
+			{
+				kletka.plants.lifepoints += 3;
 				modif += 0.5;
-			else if (plant_soil < -10 && plant_soil >= -30)
+			}
+			else if (plant_soil < -10 && plant_soil >= -30)			
+			{
+				kletka.plants.lifepoints -= 5;
 				modif -= 0.3;
+			}			
 			else if (plant_soil < -30 && plant_soil >= -60)
+			{
+				kletka.plants.lifepoints -= 7;
 				modif -= 0.4;
+			}			
 			else if (plant_soil < -60)
 			{
 				kletka.plants.lifepoints -= 10;
 				modif -= 0.5;
 			}
 
+
 			if (Math.Abs(plant_water) <= 10)
+			{
+				kletka.plants.lifepoints += 3;
 				modif += 0.3;
+			}
 			else if (Math.Abs(plant_water) > 10 && Math.Abs(plant_water) <= 30)
+			{
+				kletka.plants.lifepoints += 4;
 				modif += 0.4;
+			}
 			else if (Math.Abs(plant_water) > 30 && Math.Abs(plant_water) <= 60)
+			{
+				kletka.plants.lifepoints -= 7;
 				modif -= 0.3;
+			}
 			else if (Math.Abs(plant_water) > 60)
 			{
 				kletka.plants.lifepoints -= 10;
 				modif -= 0.4;
 			}
 
+
 			if (Math.Abs(plant_light) <= 10)
 			{
+				kletka.plants.lifepoints += 3;
 				if (kletka.plants.plantkind == PlantKind.El)
 					modif += 0.3;
 				else
@@ -506,6 +623,7 @@ namespace ForestComp
 			}
 			else if (Math.Abs(plant_light) > 10 && Math.Abs(plant_light) <= 30)
 			{
+				kletka.plants.lifepoints += 4;
 				if (kletka.plants.plantkind == PlantKind.El)
 					modif += 0.2;
 				else
@@ -513,6 +631,7 @@ namespace ForestComp
 			}
 			else if (Math.Abs(plant_light) > 30 && Math.Abs(plant_light) <= 60)
 			{
+				kletka.plants.lifepoints -= 7;
 				if (kletka.plants.plantkind == PlantKind.El)
 					modif -= 0.2;
 				else
@@ -529,6 +648,12 @@ namespace ForestComp
 			}
 
 
+
+			if (kletka.plants.lifepoints > 50)
+			{
+				kletka.plants.lifepoints = 50;
+			}
+			
 			if (modif < 0)
 			{
 				modif = 0;
@@ -683,15 +808,20 @@ namespace ForestComp
 		//Проверка освещенности клетки в зависимости от закрытия кроной деревьев
 		private void lumine_check()
 		{
+			
 			int lumbuf = Convert.ToInt32(window.luminetextBox.Text);
 			
 			for (int i = 0; i < n; i++)
 			{
 				for (int j = 0; j < n; j++)
 				{
-					if (buttons2[i, j].plkolvo > 1 /*&& !isCrowntallest(buttons[i, j], buttons2[i, j])*/)
+					if (buttons2[i, j].plkolvo > 1 && buttons[i, j].plants.plantkind != PlantKind.Empty)
 						buttons[i, j].illumination = lumbuf / isCrowntallest(buttons[i, j], buttons2[i, j]);
-					else buttons[i, j].illumination = lumbuf;
+                    else if (buttons2[i, j].plkolvo >= 1 && buttons[i, j].plants.plantkind == PlantKind.Empty)
+                    {
+                        buttons[i, j].illumination = lumbuf / (buttons2[i, j].plkolvo + 1);
+                    }
+                    else buttons[i, j].illumination = lumbuf;
 				}
 			}
 		}
@@ -700,15 +830,11 @@ namespace ForestComp
 		public int isCrowntallest(Cell kletka, Aircells aircell)
 		{
 			Aircells airc_buf = new Aircells();			
-			double max = -1;
 			int maxindex = 1;
 
-			max = aircell.plants[0].height;
-
-			
 			for (int k = 0; k < aircell.plkolvo; k++)
 			{
-				for (int l = k + 1; l < aircell.plkolvo; l++)
+				for (int l = k + 1; l <= aircell.plkolvo; l++)
 				{
 					if (aircell.plants[k].height < aircell.plants[l].height)
 					{
@@ -718,7 +844,6 @@ namespace ForestComp
 					}
 				}
 			}
-
             for (int k = 0; k < aircell.plkolvo; k++)
             {
 				if (kletka.plants == aircell.plants[k])
@@ -726,23 +851,8 @@ namespace ForestComp
             }
 
 			return maxindex;
-            //for (int k = 0; k < aircell.plkolvo; k++)
-            //{
-            //	if (max < aircell.plants[k].height)
-            //		max = aircell.plants[k].height;
-            //}
-
-            //if (kletka.plants.height == max)
-            //	return true;
-            //else return false;
-            //
-
-            //if (kletka.plants.height == max)
-            //	return true;
-            //else return false;
-
-
         }
+
 
 	}
 }

@@ -17,7 +17,7 @@ namespace ForestComp
 
         public Color trunkColor; //Цвет ствола
         public Color crownColor; //Цвет кроны
-        public int lifepoints = 30; //Показатели жизни
+        public int lifepoints = 40; //Показатели жизни
         public int age = 0; //Возраст
         public double height = 0; //Высота
         public int grow_modific; //Модификатор роста
