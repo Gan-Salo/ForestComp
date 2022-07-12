@@ -29,6 +29,7 @@ namespace ForestComp
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.oneyear_button = new System.Windows.Forms.Button();
@@ -37,6 +38,10 @@ namespace ForestComp
             this.luminelabel = new System.Windows.Forms.Label();
             this.wetlabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.firebutton = new System.Windows.Forms.Button();
+            this.stopbutton = new System.Windows.Forms.Button();
+            this.modeltimer = new System.Windows.Forms.Timer(this.components);
+            this.firecheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,9 +49,9 @@ namespace ForestComp
             // 
             this.button1.Location = new System.Drawing.Point(12, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
+            this.button1.Text = "Запустить ";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -107,6 +112,8 @@ namespace ForestComp
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.firecheckBox);
+            this.panel1.Controls.Add(this.firebutton);
             this.panel1.Controls.Add(this.luminetextBox);
             this.panel1.Controls.Add(this.wetlabel);
             this.panel1.Controls.Add(this.luminelabel);
@@ -116,11 +123,47 @@ namespace ForestComp
             this.panel1.Size = new System.Drawing.Size(202, 182);
             this.panel1.TabIndex = 7;
             // 
+            // firebutton
+            // 
+            this.firebutton.Location = new System.Drawing.Point(108, 44);
+            this.firebutton.Name = "firebutton";
+            this.firebutton.Size = new System.Drawing.Size(112, 23);
+            this.firebutton.TabIndex = 7;
+            this.firebutton.Text = "Запуск пожара";
+            this.firebutton.UseVisualStyleBackColor = true;
+            this.firebutton.Click += new System.EventHandler(this.firebutton_Click);
+            // 
+            // stopbutton
+            // 
+            this.stopbutton.Location = new System.Drawing.Point(113, 12);
+            this.stopbutton.Name = "stopbutton";
+            this.stopbutton.Size = new System.Drawing.Size(104, 23);
+            this.stopbutton.TabIndex = 8;
+            this.stopbutton.Text = "Стоп";
+            this.stopbutton.UseVisualStyleBackColor = true;
+            this.stopbutton.Click += new System.EventHandler(this.stopbutton_Click);
+            // 
+            // modeltimer
+            // 
+            this.modeltimer.Tick += new System.EventHandler(this.modeltimer_Tick);
+            // 
+            // firecheckBox
+            // 
+            this.firecheckBox.AutoSize = true;
+            this.firecheckBox.Location = new System.Drawing.Point(3, 48);
+            this.firecheckBox.Name = "firecheckBox";
+            this.firecheckBox.Size = new System.Drawing.Size(102, 17);
+            this.firecheckBox.TabIndex = 8;
+            this.firecheckBox.Text = "Режим пожара";
+            this.firecheckBox.UseVisualStyleBackColor = true;
+            this.firecheckBox.CheckedChanged += new System.EventHandler(this.firecheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1354, 703);
+            this.Controls.Add(this.stopbutton);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.oneyear_button);
             this.Controls.Add(this.richTextBox1);
@@ -144,6 +187,10 @@ namespace ForestComp
         private System.Windows.Forms.Label luminelabel;
         private System.Windows.Forms.Label wetlabel;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button stopbutton;
+        private System.Windows.Forms.Timer modeltimer;
+        public System.Windows.Forms.Button firebutton;
+        public System.Windows.Forms.CheckBox firecheckBox;
     }
 }
 

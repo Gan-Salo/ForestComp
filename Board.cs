@@ -23,7 +23,10 @@ namespace ForestComp
 			buttons2 = new Aircells[n, n];
 			window.luminetextBox.Text = "30";
 			window.wetnesstextBox.Text = "30";
-
+			//window.firebutton.Click += new EventHandler(firebutton_Click);
+			
+				
+			
 			//Формирование полей с клетками
 			for (int i = 0; i < n; i++)
 			{
@@ -51,8 +54,14 @@ namespace ForestComp
 					//if ((i > 1 && j > 1 && i < (n - 2) && j < (n - 2)))
 					//plant_Choose(buttons[i, j], i, j);
 
-					buttons[i, j].Click += new EventHandler(buttons_Click);
+					
+					buttons[i, j].Click += new EventHandler(buttons_DoubleClick); 
+
+					//else if(window.firecheckBox.Checked == false) 
+					//	buttons[i, j].Click += new EventHandler(buttons_Click);
+					
 					buttons2[i, j].Click += new EventHandler(buttons2_Click);
+					
 				}
 
 
@@ -70,6 +79,11 @@ namespace ForestComp
 			}
 		}
 
+		private void firecheckBox_check(object sender, EventArgs e)
+		{
+			
+		
+		}
 		//Вывод информации при клике на клетку первого поля
 		private void buttons_Click(object sender, EventArgs e)
 		{
@@ -88,6 +102,47 @@ namespace ForestComp
 			//plant_Placement(pressedKletka);
 		}
 
+		private void buttons_DoubleClick(object sender, EventArgs e)
+		{
+			int k =  0, l = 0;
+			Cell pressedKletka = sender as Cell;
+			for (int i = 1; i < (n - 1); i++)
+			{
+				for (int j = 1; j < (n - 1); j++)
+				{
+					if (pressedKletka == buttons[i, j])
+                    {
+						k = i;
+						l = j;
+                    }
+				}
+			}
+			window.richTextBox1.Text += "- - - - - - - - - " + "\n";
+			window.richTextBox1.Text += k + " " + l + "\n\n";
+			window.richTextBox1.Text += "- - - - - - - - - " + "\n";
+
+			Fire fire = new Fire(buttons, buttons2, pressedKletka, k, l);
+			//plant_Placement(pressedKletka);
+		}
+
+		private void firebutton_Click(object sender, EventArgs e)
+		{
+			//int i = rand.Next(3, 30);
+			//int j = rand.Next(3, 30);
+			for (int i = 1; i < (n - 1); i++)
+			{
+				for (int j = 1; j < (n - 1); j++)
+				{
+					buttons[i,j].DoubleClick += new EventHandler(buttons_DoubleClick);
+				}
+			}
+			
+
+			//Fire fire = new Fire(buttons, buttons2, buttons[i, j], i, j);
+
+			//plant_Placement(pressedKletka);
+		}
+		
 		//Вывод информации при клике на клетку второго поля
 		private void buttons2_Click(object sender, EventArgs e)
 		{
@@ -122,7 +177,7 @@ namespace ForestComp
 				{
 					if (buttons[i, j].plants.plantkind == PlantKind.Empty)
 					{
-						buttons[i, j].soil.wetness -= rand.Next(0, 8) + (buttons[i, j].illumination / 5);
+						buttons[i, j].soil.wetness -= rand.Next(0, 10) + (buttons[i, j].illumination / 10);
 					}
 					
 					if (buttons[i, j].soil.wetness < -100)
@@ -158,6 +213,11 @@ namespace ForestComp
 					if (buttons[i, j].soil.wetness > 150)
 					{
 						buttons[i, j].soil.toxity -= 1;
+					}
+
+					if (buttons[i, j].soil.wetness < 0)
+					{
+						buttons[i, j].soil.toxity = 0;
 					}
 				}
 			}
@@ -248,7 +308,7 @@ namespace ForestComp
 		//Рассчёт вероятности спавна определенных деревьев
 		private int plant_Placement(Cell kletka, int k, int l)
 		{
-			int kolvo = 301;
+			int kolvo = 401;
 			
 			int[] rand_mass = new int[kolvo];
 			for (int i = 0; i < kolvo; i++)
@@ -349,23 +409,23 @@ namespace ForestComp
 
 			if (kletka.soil.toxity <= 10)
 			{
-				el_chances -= 1;
-				osina_chances -= 1;
-			}
-			else if (kletka.soil.toxity > 10 && kletka.soil.toxity <= 20)
-			{
 				el_chances -= 2;
 				osina_chances -= 2;
 			}
-			else if (kletka.soil.toxity > 20 && kletka.soil.toxity <= 40)
+			else if (kletka.soil.toxity > 10 && kletka.soil.toxity <= 20)
 			{
 				el_chances -= 3;
 				osina_chances -= 3;
 			}
-			else if (kletka.soil.toxity > 40)
+			else if (kletka.soil.toxity > 20 && kletka.soil.toxity <= 40)
 			{
 				el_chances -= 4;
 				osina_chances -= 4;
+			}
+			else if (kletka.soil.toxity > 40)
+			{
+				el_chances -= 5;
+				osina_chances -= 5;
 			}
 
 
@@ -596,17 +656,17 @@ namespace ForestComp
 				kletka.plants.lifepoints += 3;
 				modif += 0.3;
 			}
-			else if (Math.Abs(plant_water) > 10 && Math.Abs(plant_water) <= 30)
+			else if (Math.Abs(plant_water) > 10 && Math.Abs(plant_water) <= 50)
 			{
 				kletka.plants.lifepoints += 4;
 				modif += 0.4;
 			}
-			else if (Math.Abs(plant_water) > 30 && Math.Abs(plant_water) <= 60)
+			else if (Math.Abs(plant_water) > 50 && Math.Abs(plant_water) <= 100)
 			{
 				kletka.plants.lifepoints -= 7;
 				modif -= 0.3;
 			}
-			else if (Math.Abs(plant_water) > 60)
+			else if (Math.Abs(plant_water) > 100)
 			{
 				kletka.plants.lifepoints -= 10;
 				modif -= 0.4;

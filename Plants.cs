@@ -35,9 +35,7 @@ namespace ForestComp
             this.soil_demand = 0;
             this.water_demand = 0;
             this.light_demand = 0;
-        }
-
-       
+        }  
     }
 
     class Osina : Plants
@@ -46,9 +44,9 @@ namespace ForestComp
         {
             this.plantkind = PlantKind.Osina;
           
-            this.crownColor = Color.FromArgb(120, 200, 00);
+            this.crownColor = Color.FromArgb(120, 200, 0);
             //this.trunkColor = Color.FromArgb(220, 119, 0);
-            this.trunkColor = Color.FromArgb(64, 104, 136);
+            this.trunkColor = Color.FromArgb(0, 240, 240);
             this.soil_demand = 50;
             this.water_demand = 60;
             this.light_demand = 70;
@@ -61,11 +59,11 @@ namespace ForestComp
         {
             this.plantkind = PlantKind.El; 
             this.crownColor = Color.FromArgb(48, 80, 0);
-            this.trunkColor = Color.FromArgb(80, 136, 00);
+            this.trunkColor = Color.FromArgb(128, 80, 208);
             //this.trunkColor = Color.FromArgb(248, 104, 48);
             this.soil_demand = 60;
-            this.water_demand = 40;
-            this.light_demand = 20;
+            this.water_demand = 60;
+            this.light_demand = 30;
         }
     }
 

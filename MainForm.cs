@@ -16,7 +16,8 @@ namespace ForestComp
 		//Button[,] buttons2;
 		//Random rand = new Random();
 		Board board;
-		
+		private int ticks;
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -24,7 +25,7 @@ namespace ForestComp
 		
 		private void button1_Click(object sender, EventArgs e)
 		{
-
+			modeltimer.Start();
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
@@ -48,6 +49,34 @@ namespace ForestComp
 		}
 
         private void luminetextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void modeltimer_Tick(object sender, EventArgs e)
+        {
+			ticks++;
+			this.Text = ticks.ToString();
+
+			if ((ticks / 10) == 0)
+            {
+				board.oneyear_step();
+				ticks = 0;
+			}
+
+        }
+
+        private void stopbutton_Click(object sender, EventArgs e)
+        {
+			modeltimer.Stop();
+		}
+
+        public void firebutton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void firecheckBox_CheckedChanged(object sender, EventArgs e)
         {
 
         }
