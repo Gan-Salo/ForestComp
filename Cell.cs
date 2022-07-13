@@ -18,27 +18,15 @@ namespace ForestComp
         public Plants plants = new Empty();     //Растения
         public int illumination = 20;    //Степень освещённости клетки
         public bool fireflag = false;
+        public int CoordX { set; get; }
+        public int CoordY { set; get; }
+
         private void Kletka_Load(object sender, EventArgs e)
         {           
             this.Width = 15;
             this.Height = 15;
         }
-        /*Получения Y координаты клетки*/
-        public int GetY
-        {
-            get
-            {
-                return location.y;
-            }
-        }
-        /*Получения X координаты клетки*/
-        public int GetX
-        {
-            get
-            {
-                return location.x;
-            }
-        }
+ 
         public Cell()
         {
             this.Width = 15;

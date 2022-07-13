@@ -9,15 +9,15 @@ using System.Windows.Forms;
 namespace ForestComp
 {
     //Почва
-    public enum SoilKind { None, Poor, Average, Rich }
+    public enum SoilKind { None, Poor, Average, Rich, Pepel }
    
     public class Soil
     {
-        public SoilKind soilkind { get; set; }
+        public SoilKind soilkind;
         public Color soilColor;
         public int prolificacy; //Плодородность
-        public int toxity;   //Токсичность 
-        public int wetness = 80;     //Влажность 
+        public int toxity = 0;   //Токсичность 
+        public int wetness = 20;     //Влажность 
         
     }
 
@@ -25,7 +25,7 @@ namespace ForestComp
     {
         public None()
         {
-            //this.
+ 
         }
     }
 
@@ -57,6 +57,16 @@ namespace ForestComp
             this.soilkind = SoilKind.Rich;
             this.soilColor = Color.FromArgb(209, 137, 81);
             this.prolificacy = 80;
+        }
+    }
+
+    class Pepel : Soil
+    {
+        public Pepel()
+        {
+            this.soilkind = SoilKind.Pepel;
+            this.soilColor = Color.FromArgb(124, 124, 124);
+            this.prolificacy = 0;
         }
     }
 

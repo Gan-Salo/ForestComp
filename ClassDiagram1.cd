@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ForestComp.Aircells" Collapsed="true">
+    <Position X="14.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Aircells.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.AirFire" Collapsed="true">
+    <Position X="3" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAACQAAAAAAAAAAAAIAAAAABAAAgAAAAAA=</HashCode>
+      <FileName>AirFire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Board" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EABAAIAgIAQAAYACIAQBgAQUBAIAAAAIFAASBAAEQAA=</HashCode>
+      <FileName>Board.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Cell" Collapsed="true">
+    <Position X="2" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQACAAAAEAEAQAAAAAAEEAA=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Fire" Collapsed="true">
+    <Position X="0.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAACAAAAAAAAAAAAAIAAAAAAQAAgAAEAAA=</HashCode>
+      <FileName>Fire.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.MainForm" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBAAACACAAAIEABQCEEAAKiBAIAACAIEARAQBAAAE=</HashCode>
+      <FileName>MainForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Plants" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAACEAAAISAQAAAAAAAAAAAAAAAEAAAAAAAgIAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Empty" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Osina" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.El" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Klen" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Program" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Soil" Collapsed="true">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAgAAAAAAAAAAAAAAQQAAAAAAgAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.None" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Poor" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Average" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Rich" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Pepel" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Properties.Resources" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAACAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ForestComp.Properties.Settings" Collapsed="true">
+    <Position X="16" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ForestComp.Location" Collapsed="true">
+    <Position X="12.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="ForestComp.PlantKind" Collapsed="true">
+    <Position X="12.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAIAAAACAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ForestComp.PlantStage" Collapsed="true">
+    <Position X="14.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAABAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Plants.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ForestComp.SoilKind" Collapsed="true">
+    <Position X="16" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAEAgAAAAAAAAAAAAAAAIAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Soil.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

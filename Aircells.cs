@@ -14,9 +14,9 @@ namespace ForestComp
     public class Aircells : Button
     {
         public int plkolvo = 0;
-        public Plants[] plants = { new Empty(), new Empty(), new Empty(), new Empty(), new Empty(), new Empty(), new Empty() }; 
-
-         public Aircells()
+        public Plants[] plants = { new Empty(), new Empty(), new Empty(), new Empty(), new Empty(), new Empty(), new Empty() };
+        public bool fireflag = false;
+        public Aircells()
         {
             
             this.Width = 15;
