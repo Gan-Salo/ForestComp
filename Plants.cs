@@ -19,8 +19,7 @@ namespace ForestComp
         public Color crownColor; //Цвет кроны
         public int lifepoints = 50; //Показатели жизни
         public int age = 0; //Возраст
-        public double height = 0; //Высота
-        public int grow_modific; //Модификатор роста
+        public double height = 0; //Высота      
         public int soil_demand; //Требовательность к плодородности почвы
         public int water_demand; //Требовательность к воде
         public int light_demand; //Требовательность к свету

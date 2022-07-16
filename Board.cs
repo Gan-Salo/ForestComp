@@ -125,20 +125,6 @@ namespace ForestComp
 				Fire fire = new Fire(buttons, buttons2, pressedKletka, pressedKletka.CoordX, pressedKletka.CoordY);
 			}
 		}
-
-		//private void firebutton_Click(object sender, EventArgs e)
-		//{
-		//	//int i = rand.Next(3, 30);
-		//	//int j = rand.Next(3, 30);
-		//	for (int i = 1; i < (n - 1); i++)
-		//	{
-		//		for (int j = 1; j < (n - 1); j++)
-		//		{
-					
-		//		}
-		//	}
-			
-		//}
 		
 		//Вывод информации при клике на клетку второго поля
 		private void buttons2_Click(object sender, EventArgs e)
@@ -235,12 +221,12 @@ namespace ForestComp
 				}
 			}
 
-			soil_refresh();     //Обновление почвы
-			air_refresh();
+			soil_refresh();     //Обновление почвы		
 			plants_refresh();
 			crown_Destroy();
 			crown_refresh();
 			crown_check();
+			air_refresh();
 			lumine_check();
 			
 		}
@@ -248,14 +234,13 @@ namespace ForestComp
 		public void plant_Choose(Cell kletka, int k, int l)
 		{
 			int random_plant = plant_Placement(kletka, k, l);
-			//int random_plant = rand.Next(1, 101);
-			//window.richTextBox1.Text += random_plant + "\n";
+
 			switch (random_plant)
 			{
 				case 1:
 					{
 						kletka.plants = new Osina();
-						// kletka.plants.plantkind = PlantKind.Osina;
+						kletka.plants.plantkind = PlantKind.Osina;
 						kletka.plants.plantstage = PlantStage.Small;
 						kletka.BackColor = kletka.plants.trunkColor;
 						break;
@@ -292,6 +277,12 @@ namespace ForestComp
 
 			if (kletka.soil.wetness > 120)
 				kletka.soil.wetness = 120;
+
+			if (kletka.illumination > 100)
+				kletka.illumination = 100;
+
+			if (kletka.illumination < 0)
+				kletka.illumination = 0;
 
 			if (kletka.soil.wetness > 110)
 			{
@@ -349,102 +340,102 @@ namespace ForestComp
 		//Рассчёт вероятности спавна определенных деревьев
 		private int plant_Placement(Cell kletka, int k, int l)
 		{
-			int kolvo = 401;
+			int kolvo = 301;
 			
 			int[] rand_mass = new int[kolvo];
 			for (int i = 0; i < kolvo; i++)
 				rand_mass[i] = 0;
 
-			int[] plant_soil = new int[6]; //Массив для хранения требований разных растений
+			int[] pl_demand = new int[6]; //Массив для хранения требований разных растений
 
 			Osina osina = new Osina();
 			Klen klen = new Klen();
 			El el = new El();
 
-			plant_soil[0] = kletka.soil.prolificacy - osina.soil_demand;
-			plant_soil[1] = kletka.soil.prolificacy - klen.soil_demand;
-			plant_soil[2] = kletka.soil.prolificacy - el.soil_demand;
+			pl_demand[0] = kletka.soil.prolificacy - osina.soil_demand;
+			pl_demand[1] = kletka.soil.prolificacy - klen.soil_demand;
+			pl_demand[2] = kletka.soil.prolificacy - el.soil_demand;
 
-			int osina_chances = 2, klen_chances = 2, el_chances = 2;
+			int osina_chances = 0, klen_chances = 1, el_chances = 0;
 
 			//Шансы деревьев прорасти при заданной плодородности
-			if (Math.Abs(plant_soil[0]) <= 5)
+			if (Math.Abs(pl_demand[0]) <= 5)
 				osina_chances += 0;
-			else if (plant_soil[0] > 5 && plant_soil[0] <= 20)
+			else if (pl_demand[0] > 5 && pl_demand[0] <= 20)
 				osina_chances += 1;
-			else if (plant_soil[0] > 20 && plant_soil[0] <= 40)
+			else if (pl_demand[0] > 20 && pl_demand[0] <= 40)
 				osina_chances += 2;
-			else if (plant_soil[0] > 40)
+			else if (pl_demand[0] > 40)
 				osina_chances += 3;
-			else if (plant_soil[0] < -5 && plant_soil[0] >= -20)
+			else if (pl_demand[0] < -5 && pl_demand[0] >= -20)
 				osina_chances -= 3;
-			else if (plant_soil[0] < -20 && plant_soil[0] >= -40)
+			else if (pl_demand[0] < -20 && pl_demand[0] >= -40)
 				osina_chances -= 4;
-			else if (plant_soil[0] < -40)
+			else if (pl_demand[0] < -40)
 				osina_chances -= 5;
 
-			if (Math.Abs(plant_soil[1]) <= 5)
+			if (Math.Abs(pl_demand[1]) <= 5)
 				klen_chances += 0;
-			else if (plant_soil[1] > 5 && plant_soil[1] <= 20)
+			else if (pl_demand[1] > 5 && pl_demand[1] <= 20)
 				klen_chances += 1;
-			else if (plant_soil[1] > 20 && plant_soil[1] <= 40)
+			else if (pl_demand[1] > 20 && pl_demand[1] <= 40)
 				klen_chances += 2;
-			else if (plant_soil[1] > 40)
+			else if (pl_demand[1] > 40)
 				klen_chances += 3;
-			else if (plant_soil[1] < -5 && plant_soil[1] >= -20)
+			else if (pl_demand[1] < -5 && pl_demand[1] >= -20)
 				klen_chances -= 3;
-			else if (plant_soil[1] < -20 && plant_soil[1] >= -40)
+			else if (pl_demand[1] < -20 && pl_demand[1] >= -40)
 				klen_chances -= 4;
-			else if (plant_soil[1] < -40)
+			else if (pl_demand[1] < -40)
 				klen_chances -= 5;
 
-			if (Math.Abs(plant_soil[2]) <= 5)
+			if (Math.Abs(pl_demand[2]) <= 5)
 				el_chances += 0;
-			else if (plant_soil[2] > 5 && plant_soil[2] <= 20)
+			else if (pl_demand[2] > 5 && pl_demand[2] <= 20)
 				el_chances += 1;
-			else if (plant_soil[2] > 20 && plant_soil[2] <= 40)
+			else if (pl_demand[2] > 20 && pl_demand[2] <= 40)
 				el_chances += 2;
-			else if (plant_soil[2] > 40)
+			else if (pl_demand[2] > 40)
 				el_chances += 3;
-			else if (plant_soil[2] < -5 && plant_soil[2] >= -20)
+			else if (pl_demand[2] < -5 && pl_demand[2] >= -20)
 				el_chances -= 3;
-			else if (plant_soil[2] < -20 && plant_soil[2] >= -40)
+			else if (pl_demand[2] < -20 && pl_demand[2] >= -40)
 				el_chances -= 4;
-			else if (plant_soil[2] < -40)
+			else if (pl_demand[2] < -40)
 				el_chances -= 5;
 
 			//Шансы деревьев прорасти при заданной влажности почвы
-			plant_soil[3] = kletka.soil.wetness - osina.water_demand;
-			plant_soil[4] = kletka.soil.wetness - klen.water_demand;
-			plant_soil[5] = kletka.soil.wetness - el.water_demand;
+			pl_demand[3] = kletka.soil.wetness - osina.water_demand;
+			pl_demand[4] = kletka.soil.wetness - klen.water_demand;
+			pl_demand[5] = kletka.soil.wetness - el.water_demand;
 
-			if (Math.Abs(plant_soil[3]) <= 5)
+			if (Math.Abs(pl_demand[3]) <= 5)
 				osina_chances += 3;
-			else if (Math.Abs(plant_soil[3]) > 5 && Math.Abs(plant_soil[3]) <= 20)
+			else if (Math.Abs(pl_demand[3]) > 5 && Math.Abs(pl_demand[3]) <= 20)
 				osina_chances += 4;
-			else if (Math.Abs(plant_soil[3]) > 20 && Math.Abs(plant_soil[3]) <= 40)
+			else if (Math.Abs(pl_demand[3]) > 20 && Math.Abs(pl_demand[3]) <= 40)
 				osina_chances -= 4;
-			else if (Math.Abs(plant_soil[3]) > 40)
+			else if (Math.Abs(pl_demand[3]) > 40)
 				osina_chances -= 5;
 
 
-			if (Math.Abs(plant_soil[4]) <= 5)
+			if (Math.Abs(pl_demand[4]) <= 5)
 				klen_chances += 3;
-			else if (Math.Abs(plant_soil[4]) > 10 && Math.Abs(plant_soil[4]) <= 20)
+			else if (Math.Abs(pl_demand[4]) > 10 && Math.Abs(pl_demand[4]) <= 20)
 				klen_chances += 4;
-			else if (Math.Abs(plant_soil[4]) > 20 && Math.Abs(plant_soil[4]) <= 40)
-				klen_chances -= 3;
-			else if (Math.Abs(plant_soil[4]) > 40)
+			else if (Math.Abs(pl_demand[4]) > 20 && Math.Abs(pl_demand[4]) <= 40)
 				klen_chances -= 4;
+			else if (Math.Abs(pl_demand[4]) > 40)
+				klen_chances -= 5;
 
 
-			if (Math.Abs(plant_soil[5]) <= 5)
+			if (Math.Abs(pl_demand[5]) <= 5)
 				el_chances += 3;
-			else if (Math.Abs(plant_soil[5]) > 10 && Math.Abs(plant_soil[5]) <= 20)
+			else if (Math.Abs(pl_demand[5]) > 10 && Math.Abs(pl_demand[5]) <= 20)
 				el_chances += 4;
-			else if (Math.Abs(plant_soil[5]) > 20 && Math.Abs(plant_soil[5]) <= 40)
+			else if (Math.Abs(pl_demand[5]) > 20 && Math.Abs(pl_demand[5]) <= 40)
 				el_chances -= 4;
-			else if (Math.Abs(plant_soil[5]) > 40)
+			else if (Math.Abs(pl_demand[5]) > 40)
 				el_chances -= 5;
 
 
@@ -668,38 +659,38 @@ namespace ForestComp
 		private double growth_modificator(Cell kletka)
 		{
 			double modif = 0;
-			int plant_soil = kletka.soil.prolificacy - kletka.plants.soil_demand;
+			int pl_demand = kletka.soil.prolificacy - kletka.plants.soil_demand;
 			int plant_water = kletka.soil.wetness - kletka.plants.water_demand;
 			int plant_light = kletka.illumination - kletka.plants.light_demand;
 			int soil_toxity = kletka.soil.toxity;
 
 			//Шансы деревьев прорасти при заданной плодородности
-			if (Math.Abs(plant_soil) <= 10)
+			if (Math.Abs(pl_demand) <= 10)
 			{
 				kletka.plants.lifepoints += 2;
 				modif += 0.3;
 			}
-			else if (plant_soil > 10 && plant_soil <= 30)
+			else if (pl_demand > 10 && pl_demand <= 30)
 			{
 				kletka.plants.lifepoints += 3;
 				modif += 0.4;
 			}
-			else if (plant_soil > 30)
+			else if (pl_demand > 30)
 			{
 				kletka.plants.lifepoints += 4;
 				modif += 0.5;
 			}
-			else if (plant_soil < -10 && plant_soil >= -30)			
+			else if (pl_demand < -10 && pl_demand >= -30)			
 			{
 				kletka.plants.lifepoints -= 5;
 				modif -= 0.3;
 			}			
-			else if (plant_soil < -30 && plant_soil >= -60)
+			else if (pl_demand < -30 && pl_demand >= -60)
 			{
 				kletka.plants.lifepoints -= 7;
 				modif -= 0.4;
 			}			
-			else if (plant_soil < -60)
+			else if (pl_demand < -60)
 			{
 				kletka.plants.lifepoints -= 9;
 				modif -= 0.5;
@@ -977,7 +968,7 @@ namespace ForestComp
 				for (int j = 0; j < n; j++)
 				{
 					if (buttons2[i, j].plkolvo == 0)
-						buttons2[i, j].BackColor = buttons[i, j].soil.soilColor;
+						buttons2[i, j].BackColor = buttons[i, j].BackColor;
 				
 				}
 			}
