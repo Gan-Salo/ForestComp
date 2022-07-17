@@ -162,9 +162,6 @@ namespace ForestComp
 					window.richTextBox1.Text += "Высота дерева:" + pressedKletka.plants[i].height + "\n\n";
 				}
 			}
-			//window.richTextBox1.Text += "Age = " + pressedKletka.plants.age + "\n";
-			//window.richTextBox1.Text += "Height = " + pressedKletka.plants[int].height + "\n";
-			//plant_Placement(pressedKletka);
 		}
 		public void oneyear_step()
 		{
@@ -188,11 +185,9 @@ namespace ForestComp
 
 					if (buttons[i, j].plants.plantkind == PlantKind.Empty)
 					{
-						buttons[i, j].soil.wetness -= rand.Next(0, 6) + (buttons[i, j].illumination / 7 /*5*/);
+						buttons[i, j].soil.wetness = buttons[i, j].soil.wetness - rand.Next(10, 25) + (buttons[i, j].illumination / 6);
 					}
 					
-					//if (buttons[i, j].soil.prolificacy > 0)
-					//	buttons[i, j].soil.prolificacy += 10;
 					check_all(buttons[i, j]);
 
 
@@ -203,20 +198,18 @@ namespace ForestComp
 
 						buttons[i, j].soil.wetness -= buttons[i, j].plants.water_demand / 5;    //Почва теряет количество воды, необходимое растению
 						
+						//Клён выделяет на клетки рядом с собой "токсичность"
 						if (buttons[i, j].plants.plantkind == PlantKind.Klen)
 						{
-							//for (int i = k - 1; k < i + 1; i++)
-							//	for (int l = j - 1; l < j + 1; j++)
 							buttons[i, j].soil.toxity += 2;
 							buttons[i + 1, j].soil.toxity += 2;
 							buttons[i - 1, j].soil.toxity += 2;
 							buttons[i, j + 1].soil.toxity += 2;
-							buttons[i, j - 1].soil.toxity += 2;
-							
+							buttons[i, j - 1].soil.toxity += 2;							
 						}
 						
 						plant_grow(buttons[i, j]);  //Отрисовка кроны в зависимости от стадии роста дерева	
-						age_check(buttons[i, j]);			
+						age_check(buttons[i, j]);	//Проверка возраста дерева		
 					}
 				}
 			}
@@ -225,9 +218,9 @@ namespace ForestComp
 			plants_refresh();
 			crown_Destroy();
 			crown_refresh();
-			crown_check();
-			air_refresh();
-			lumine_check();
+			crown_check();	
+			air_refresh();		
+			lumine_check();		//Проверка зависимости освещённости клетки от крон деревьев
 			
 		}
 		//Спавн деревьев
@@ -269,7 +262,7 @@ namespace ForestComp
 
 		}
 
-		//Изменяет некорректные значения полей
+		//Изменения некорректных значений параметров
 		public void check_all(Cell kletka)
 		{
 			if (kletka.soil.wetness < -50)
@@ -284,7 +277,7 @@ namespace ForestComp
 			if (kletka.illumination < 0)
 				kletka.illumination = 0;
 
-			if (kletka.soil.wetness > 110)
+			if (kletka.soil.wetness > 100)
 			{
 				kletka.soil.toxity -= 1;
 			}
@@ -301,7 +294,7 @@ namespace ForestComp
 			
 		}
 			
-		//Размещение почвы
+		//Размещение почвы на поле
 		public void soil_Choose(Cell kletka)
 		{
 			int random_soil = rand.Next(1, 7);
@@ -444,17 +437,17 @@ namespace ForestComp
 				el_chances -= 2;
 				osina_chances -= 2;
 			}
-			else if (kletka.soil.toxity > 10 && kletka.soil.toxity <= 20)
+			else if (kletka.soil.toxity > 10 && kletka.soil.toxity <= 30)
 			{
 				el_chances -= 3;
 				osina_chances -= 3;
 			}
-			else if (kletka.soil.toxity > 20 && kletka.soil.toxity <= 40)
+			else if (kletka.soil.toxity > 30 && kletka.soil.toxity <= 60)
 			{
 				el_chances -= 4;
 				osina_chances -= 4;
 			}
-			else if (kletka.soil.toxity > 40)
+			else if (kletka.soil.toxity > 60)
 			{
 				el_chances -= 5;
 				osina_chances -= 5;
@@ -517,6 +510,8 @@ namespace ForestComp
 				}
 			return false;
 		}
+
+		//Отрисовка кроны дерева
 		private void crown_Draw(Aircells[,] aircells, Cell kletka, int i, int j)
 		{
 			switch (kletka.plants.plantstage)
@@ -549,52 +544,7 @@ namespace ForestComp
 						aircells[i, j - 1].plkolvo++;
 						break;
 					}
-				case PlantStage.Big:
-					{
-						aircells[i, j].plants[aircells[i, j].plkolvo] = kletka.plants;
-						aircells[i + 1, j].plants[aircells[i + 1, j].plkolvo] = kletka.plants;
-						aircells[i + 2, j].plants[aircells[i + 2, j].plkolvo] = kletka.plants;
-						aircells[i - 1, j].plants[aircells[i - 1, j].plkolvo] = kletka.plants;
-						aircells[i - 2, j].plants[aircells[i - 2, j].plkolvo] = kletka.plants;					
-						aircells[i, j - 1].plants[aircells[i, j - 1].plkolvo] = kletka.plants;
-						aircells[i, j - 2].plants[aircells[i, j - 2].plkolvo] = kletka.plants;
-						aircells[i, j + 1].plants[aircells[i, j + 1].plkolvo] = kletka.plants;					
-						aircells[i, j + 2].plants[aircells[i, j + 2].plkolvo] = kletka.plants;					
-						aircells[i + 1, j + 1].plants[aircells[i + 1, j + 1].plkolvo] = kletka.plants;
-						aircells[i + 1, j - 1].plants[aircells[i + 1, j - 1].plkolvo] = kletka.plants;
-						aircells[i - 1, j + 1].plants[aircells[i - 1, j + 1].plkolvo] = kletka.plants;
-						aircells[i - 1, j - 1].plants[aircells[i - 1, j - 1].plkolvo] = kletka.plants;
 
-						aircells[i, j].BackColor = kletka.plants.crownColor;
-						aircells[i + 1, j].BackColor = kletka.plants.crownColor;
-						aircells[i + 2, j].BackColor = kletka.plants.crownColor;
-						aircells[i - 1, j].BackColor = kletka.plants.crownColor;
-						aircells[i - 2, j].BackColor = kletka.plants.crownColor;
-						aircells[i, j - 1].BackColor = kletka.plants.crownColor;
-						aircells[i, j - 2].BackColor = kletka.plants.crownColor;
-						aircells[i, j + 1].BackColor = kletka.plants.crownColor;
-						aircells[i, j + 2].BackColor = kletka.plants.crownColor;
-						aircells[i + 1, j + 1].BackColor = kletka.plants.crownColor;
-						aircells[i + 1, j - 1].BackColor = kletka.plants.crownColor;
-						aircells[i - 1, j + 1].BackColor = kletka.plants.crownColor;
-						aircells[i - 1, j - 1].BackColor = kletka.plants.crownColor;
-
-						aircells[i, j].plkolvo++;
-						aircells[i + 1, j].plkolvo++;
-						aircells[i + 2, j].plkolvo++;
-						aircells[i - 1, j].plkolvo++;
-						aircells[i - 2, j].plkolvo++;
-						aircells[i, j - 1].plkolvo++;
-						aircells[i, j - 2].plkolvo++;
-						aircells[i, j + 1].plkolvo++;
-						aircells[i, j + 2].plkolvo++;
-						aircells[i + 1, j + 1].plkolvo++;
-						aircells[i + 1, j - 1].plkolvo++;
-						aircells[i - 1, j + 1].plkolvo++;
-						aircells[i - 1, j - 1].plkolvo++;
-
-						break;
-					}
 				default:
 					{
 						break;
@@ -633,11 +583,9 @@ namespace ForestComp
 			{
 				kletka.plants.height += 0.5 * modif;
 			}
-
-			
-
 		}
 
+		//Проверка возраста деревьев и умерщвление слишком старых
 		private void age_check(Cell kletka)
 		{
 			if (kletka.plants.age > 120 && kletka.plants.plantkind == PlantKind.Osina)
@@ -656,6 +604,7 @@ namespace ForestComp
 			}
 		}
 
+		//Учёт условий, влияющих на рост дерева
 		private double growth_modificator(Cell kletka)
 		{
 			double modif = 0;
@@ -754,24 +703,24 @@ namespace ForestComp
 			}
 
 
-			if (kletka.soil.toxity > 10 && kletka.plants.plantkind != PlantKind.Klen)
+			if (kletka.soil.toxity <= 40 && kletka.plants.plantkind != PlantKind.Klen)
 			{
-				kletka.plants.lifepoints -= 2;
+				kletka.plants.lifepoints -= 1;
 				modif -= 0.1;
 			}
-			else if (kletka.soil.toxity > 30 && kletka.plants.plantkind != PlantKind.Klen)
+			else if (kletka.soil.toxity > 40 && kletka.soil.toxity <= 60 && kletka.plants.plantkind != PlantKind.Klen)
 			{
-				kletka.plants.lifepoints -= 4;
+				kletka.plants.lifepoints -= 2;
 				modif -= 0.2;
 			}
-			else if (kletka.soil.toxity > 60 && kletka.plants.plantkind != PlantKind.Klen)
+			else if (kletka.soil.toxity > 60 && kletka.soil.toxity <= 80 && kletka.plants.plantkind != PlantKind.Klen)
 			{
-				kletka.plants.lifepoints -= 6;
+				kletka.plants.lifepoints -= 3;
 				modif -= 0.3;
 			}
 			else if (kletka.soil.toxity > 80 && kletka.plants.plantkind != PlantKind.Klen)
 			{
-				kletka.plants.lifepoints -= 8;
+				kletka.plants.lifepoints -= 4;
 				modif -= 0.4;
 			}
 
@@ -816,7 +765,7 @@ namespace ForestComp
             }
         }
 
-		//Проверка смерти деревьев
+		//Проверка смерти деревьев и уничтожение их кроны
 		public void tree_dead()
         {
 			for (int i = 0; i < n; i++)
@@ -877,6 +826,7 @@ namespace ForestComp
 			}
 		}
 
+		//Обновление стадий роста растений
 		private void plants_refresh()
 		{
 			for (int i = 0; i < n; i++)
@@ -933,6 +883,8 @@ namespace ForestComp
 				}
 			}
 		}
+
+		//Обновление почвы
 		private void soil_refresh()
 		{
 			for (int i = 0; i < n; i++)
@@ -961,6 +913,7 @@ namespace ForestComp
 			}
 		}
 
+		//Обновление клеток второго поля
 		private void air_refresh()
 		{
 			for (int i = 0; i < n; i++)
@@ -976,8 +929,7 @@ namespace ForestComp
 
 		//Проверка освещенности клетки в зависимости от закрытия кроной деревьев
 		private void lumine_check()
-		{
-			
+		{	
 			int lumbuf = Convert.ToInt32(window.luminetextBox.Text);
 			
 			for (int i = 0; i < n; i++)
@@ -985,12 +937,14 @@ namespace ForestComp
 				for (int j = 0; j < n; j++)
 				{
 					if (buttons2[i, j].plkolvo > 1 && buttons[i, j].plants.plantkind != PlantKind.Empty)
+					{
 						buttons[i, j].illumination = lumbuf / isCrowntallest(buttons[i, j], buttons2[i, j]);
-                    else if (buttons2[i, j].plkolvo >= 1 && buttons[i, j].plants.plantkind == PlantKind.Empty)
-                    {
-                        buttons[i, j].illumination = lumbuf / (buttons2[i, j].plkolvo + 1);
-                    }
-                    else buttons[i, j].illumination = lumbuf;
+					}
+					else if (buttons2[i, j].plkolvo >= 1 && buttons[i, j].plants.plantkind == PlantKind.Empty)
+					{
+						buttons[i, j].illumination = lumbuf / (buttons2[i, j].plkolvo + 1);
+					}
+					else buttons[i, j].illumination = lumbuf;
 				}
 			}
 		}
@@ -1021,7 +975,6 @@ namespace ForestComp
 
 			return maxindex;
         }
-
 
 	}
 }
