@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ForestComp.Aircells" Collapsed="true">
-    <Position X="14.25" Y="2.75" Width="1.5" />
+    <Position X="10" Y="8.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAQAAAAAAAAAAAEAA=</HashCode>
       <FileName>Aircells.cs</FileName>
@@ -24,7 +24,7 @@
   <Class Name="ForestComp.Cell" Collapsed="true">
     <Position X="2" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAQACAAAAEAEAQAAAAAAEEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQACAAAAEAEAQAAAAAAAEAA=</HashCode>
       <FileName>Cell.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -142,6 +142,11 @@
     <Position X="19" Y="2.25" Width="1.5" />
     <TypeIdentifier />
   </Class>
+  <Class Name="System.Windows.Forms.Button" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
   <Struct Name="ForestComp.Location" Collapsed="true">
     <Position X="12.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
@@ -159,7 +164,7 @@
   <Enum Name="ForestComp.PlantStage" Collapsed="true">
     <Position X="14.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAACAAAAABAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Plants.cs</FileName>
     </TypeIdentifier>
   </Enum>

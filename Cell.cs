@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace ForestComp
 {
@@ -21,24 +20,11 @@ namespace ForestComp
         public int CoordX { set; get; }
         public int CoordY { set; get; }
 
-        private void Kletka_Load(object sender, EventArgs e)
-        {           
-            this.Width = 15;
-            this.Height = 15;
-        }
- 
+        /*Конструктор для создания клетки с заданными размерами*/
         public Cell()
         {
             this.Width = 15;
             this.Height = 15;
-
-        }
-        /*Конструктор для расположения клетки в пространстве*/
-        public Cell(int y, int x)
-        {
-            location.y = y;
-            location.x = x;
-            Location = new Point(x * Size.Width, y * Size.Height);
         }
     }
     

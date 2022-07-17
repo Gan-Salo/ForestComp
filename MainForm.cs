@@ -78,11 +78,6 @@ namespace ForestComp
 			this.label12.Text = count.ToString();
 		}
 
-        private void luminetextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void modeltimer_Tick(object sender, EventArgs e)
         {
 			ticks++;
@@ -102,11 +97,6 @@ namespace ForestComp
         {
 			modeltimer.Stop();
 		}
-
-        public void firebutton_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void firecheckBox_CheckedChanged(object sender, EventArgs e)
         {

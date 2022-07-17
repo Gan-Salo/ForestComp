@@ -9,7 +9,7 @@ using System.Windows.Forms;
 namespace ForestComp
 {
     public enum PlantKind { Empty, El, Osina, Klen }
-    public enum PlantStage { Small, Normal, Big }
+    public enum PlantStage { Small, Normal }
     public class Plants
     {
         public PlantKind plantkind { get; set; }
@@ -39,7 +39,7 @@ namespace ForestComp
 
     class Osina : Plants
     {
-        public Osina()  //Осина - улучшает прододие почвы около себя, 
+        public Osina() 
         {
             this.plantkind = PlantKind.Osina;          
             this.crownColor = Color.FromArgb(120, 200, 0);

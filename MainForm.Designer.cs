@@ -108,7 +108,6 @@ namespace ForestComp
             this.luminetextBox.Name = "luminetextBox";
             this.luminetextBox.Size = new System.Drawing.Size(96, 20);
             this.luminetextBox.TabIndex = 3;
-            this.luminetextBox.TextChanged += new System.EventHandler(this.luminetextBox_TextChanged);
             // 
             // wetnesstextBox
             // 

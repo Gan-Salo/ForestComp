@@ -17,9 +17,9 @@ namespace ForestComp
 		public bool firebutton_flag = false;
 		public int n = 36; //Размер поля для отрисовки 
 
-		public Board(MainForm board)
+		public Board(MainForm win)
 		{
-			window = board;
+			window = win;
 			buttons = new Cell[n, n];
 			buttons2 = new Aircells[n, n];
 			window.luminetextBox.Text = "50";
@@ -330,7 +330,7 @@ namespace ForestComp
 
 		}
 
-		//Рассчёт вероятности спавна определенных деревьев
+		//Расчёт вероятности спавна определенных деревьев
 		private int plant_Placement(Cell kletka, int k, int l)
 		{
 			int kolvo = 301;
@@ -339,7 +339,7 @@ namespace ForestComp
 			for (int i = 0; i < kolvo; i++)
 				rand_mass[i] = 0;
 
-			int[] pl_demand = new int[6]; //Массив для хранения требований разных растений
+			int[] pl_demand = new int[9]; //Массив для хранения требований разных растений
 
 			Osina osina = new Osina();
 			Klen klen = new Klen();
@@ -405,31 +405,65 @@ namespace ForestComp
 			if (Math.Abs(pl_demand[3]) <= 5)
 				osina_chances += 3;
 			else if (Math.Abs(pl_demand[3]) > 5 && Math.Abs(pl_demand[3]) <= 20)
-				osina_chances += 4;
+				osina_chances += 2;
 			else if (Math.Abs(pl_demand[3]) > 20 && Math.Abs(pl_demand[3]) <= 40)
-				osina_chances -= 4;
+				osina_chances -= 3;
 			else if (Math.Abs(pl_demand[3]) > 40)
-				osina_chances -= 5;
+				osina_chances -= 4;
 
 
 			if (Math.Abs(pl_demand[4]) <= 5)
 				klen_chances += 3;
 			else if (Math.Abs(pl_demand[4]) > 10 && Math.Abs(pl_demand[4]) <= 20)
-				klen_chances += 4;
+				klen_chances += 2;
 			else if (Math.Abs(pl_demand[4]) > 20 && Math.Abs(pl_demand[4]) <= 40)
-				klen_chances -= 4;
+				klen_chances -= 3;
 			else if (Math.Abs(pl_demand[4]) > 40)
-				klen_chances -= 5;
+				klen_chances -= 4;
 
 
 			if (Math.Abs(pl_demand[5]) <= 5)
 				el_chances += 3;
 			else if (Math.Abs(pl_demand[5]) > 10 && Math.Abs(pl_demand[5]) <= 20)
-				el_chances += 4;
+				el_chances += 2;
 			else if (Math.Abs(pl_demand[5]) > 20 && Math.Abs(pl_demand[5]) <= 40)
-				el_chances -= 4;
+				el_chances -= 3;
 			else if (Math.Abs(pl_demand[5]) > 40)
-				el_chances -= 5;
+				el_chances -= 4;
+
+			//Шансы деревьев прорасти при заданной освещённости
+			pl_demand[6] = kletka.illumination - osina.light_demand;
+			pl_demand[7] = kletka.illumination - klen.light_demand;
+			pl_demand[8] = kletka.illumination - el.light_demand;
+
+			if (Math.Abs(pl_demand[6]) <= 5)
+				osina_chances += 3;
+			else if (Math.Abs(pl_demand[6]) > 5 && Math.Abs(pl_demand[6]) <= 20)
+				osina_chances += 2;
+			else if (Math.Abs(pl_demand[6]) > 20 && Math.Abs(pl_demand[6]) <= 40)
+				osina_chances -= 3;
+			else if (Math.Abs(pl_demand[6]) > 40)
+				osina_chances -= 4;
+
+
+			if (Math.Abs(pl_demand[7]) <= 5)
+				klen_chances += 3;
+			else if (Math.Abs(pl_demand[7]) > 10 && Math.Abs(pl_demand[7]) <= 20)
+				klen_chances += 2;
+			else if (Math.Abs(pl_demand[7]) > 20 && Math.Abs(pl_demand[7]) <= 40)
+				klen_chances -= 3;
+			else if (Math.Abs(pl_demand[7]) > 40)
+				klen_chances -= 4;
+
+
+			if (Math.Abs(pl_demand[8]) <= 5)
+				el_chances += 3;
+			else if (Math.Abs(pl_demand[8]) > 10 && Math.Abs(pl_demand[8]) <= 20)
+				el_chances += 2;
+			else if (Math.Abs(pl_demand[8]) > 20 && Math.Abs(pl_demand[8]) <= 40)
+				el_chances -= 3;
+			else if (Math.Abs(pl_demand[8]) > 40)
+				el_chances -= 4;
 
 
 			if (kletka.soil.toxity <= 10)
@@ -498,6 +532,7 @@ namespace ForestComp
 
 		}
 
+		//Проверка наличия рядом с клеткой растущего дерева
 		private bool isplantnear(Cell kletka, int i, int j)
 		{
 			for (int k = i - 1; k < i + 2; k++)
@@ -611,8 +646,7 @@ namespace ForestComp
 			int pl_demand = kletka.soil.prolificacy - kletka.plants.soil_demand;
 			int plant_water = kletka.soil.wetness - kletka.plants.water_demand;
 			int plant_light = kletka.illumination - kletka.plants.light_demand;
-			int soil_toxity = kletka.soil.toxity;
-
+			
 			//Шансы деревьев прорасти при заданной плодородности
 			if (Math.Abs(pl_demand) <= 10)
 			{
@@ -837,7 +871,7 @@ namespace ForestComp
 					{
 						case PlantKind.Osina:
                         {
-							if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 10)
+							if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 15)
 							{
 								buttons[i, j].plants.plantstage = PlantStage.Small;
 							}
@@ -850,7 +884,7 @@ namespace ForestComp
                         }
 						case PlantKind.Klen:
 							{
-								if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 10)
+								if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 15)
 								{
 									buttons[i, j].plants.plantstage = PlantStage.Small;
 								}
@@ -863,7 +897,7 @@ namespace ForestComp
 							}
 						case PlantKind.El:
 							{
-								if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 10)
+								if (buttons[i, j].plants.age > 0 && buttons[i, j].plants.height < 15)
 								{
 									buttons[i, j].plants.plantstage = PlantStage.Small;
 								}
